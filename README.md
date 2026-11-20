@@ -36,7 +36,7 @@ Made by **777**, Discord `777.imt`.
 
 # OVERKILL (Português)
 
-> Feito por **777** ("seven sete") · Discord: `777.imt`
+> Feito por **777** · Discord: `777.imt`
 
 ## O que é
 
