@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OVERKILL</title>
+<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<main>
+<header>
+<h1>OVERKILL</h1>
+<div class="opts">
+<button id="mode" type="button" aria-label="Alternar modo angular">DEG</button>
+<select id="prec" aria-label="Precisão em dígitos significativos">
+<option value="8">8 dígitos</option>
+<option value="12">12 dígitos</option>
+<option value="15">15 dígitos</option>
+</select>
+</div>
+</header>
+<section class="screen" aria-live="polite">
+<input id="expr" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Expressão" placeholder="2sin(30)+√16">
+<div id="prev"></div>
+<div id="res" title="Toque para copiar" role="button" tabindex="0"></div>
+<div id="err" role="alert"></div>
+</section>
+<div class="pad" id="pad"></div>
+<details>
+<summary>Histórico</summary>
+<ul id="hist"></ul>
+<button class="clr" id="clr" type="button">Limpar histórico</button>
+</details>
+</main>
+<script src="src/engine.js"></script>
+</body>
+</html>
