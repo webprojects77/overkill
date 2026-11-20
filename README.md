@@ -4,7 +4,7 @@
 
 > Made by **777** ("seven sete") · Discord: `777.imt`
 
-[Leia em português](README.pt-BR.md)
+[Leia em português](README.pt-BR.md) · Live demo: https://webprojects77.github.io/overkill/
 
 ## What is OVERKILL?
 
@@ -26,7 +26,7 @@ The product promise is not "solve any problem imaginable". It is a broad, consis
 
 Expressions are never executed as JavaScript. Input goes through a tokenizer and a recursive-descent parser with a fixed whitelist of operations and functions. Syntax errors and domain errors (division by zero, negative square root, logarithm out of domain, overflow) are reported with the kind of error and the position in the expression, and the engine never silently returns a plausible-looking value when a calculation fails.
 
-## Current status: Phase 1 (basic calculator)
+## Current status: Phase 1 done, Phase 2 in progress
 
 Implemented today:
 
@@ -39,7 +39,13 @@ Implemented today:
 - Dark graphite theme with violet and cyan accents, plus light theme following the system
 - Runs entirely offline in the browser, no account, no server
 
-Not implemented yet (see [docs/ROADMAP.md](docs/ROADMAP.md)): symbolic algebra, matrices, Graph Studio, notebook, specialized labs, plugin SDK, Oracle (AI assistant), PWA.
+Phase 2 so far:
+
+- Variables (`x=5`) and named formulas with parameters (`f(x,y)=x^2+y`), saved locally and removable from a panel
+- Numeric root solving with `solve(f, guess)` (Newton, numeric derivative) and `solve(f, a, b)` (bisection), always reporting method, iterations, residual and tolerance
+- Matrices module: determinant, inverse (with condition number and ill-conditioning warning), transpose, rank, product, and linear systems `Ax = b` by Gauss-Jordan elimination with partial pivoting and a reported residual. Matrix entries accept expressions, so the module shares the same engine
+
+Not implemented yet (see [docs/ROADMAP.md](docs/ROADMAP.md)): exact rationals, decimals and complex numbers, symbolic algebra, Graph Studio, notebook, specialized labs, plugin SDK, Oracle (AI assistant), PWA.
 
 ## Running
 
@@ -53,7 +59,8 @@ python3 -m http.server 8000
 
 ```
 index.html        entry point
-src/engine.js     parser, evaluator, formatting, UI logic
+src/engine.js     parser, evaluator, variables, formulas, solver, UI logic
+src/matrix.js     linear algebra module (matrices, systems)
 src/style.css     styles and theme tokens
 docs/ROADMAP.md   phases, status and decisions
 ```
@@ -61,7 +68,8 @@ docs/ROADMAP.md   phases, status and decisions
 ## Known limitations
 
 - Floating-point (binary) arithmetic only; exact rationals, arbitrary-precision integers and decimals are planned
-- No symbolic computation yet
+- No symbolic computation yet; user formulas cannot be recursive
+- Matrices are limited to 12×12; systems must be square
 - Numeric input uses `.` as the decimal separator and `,` or `;` as the argument separator
 - The history is stored in the browser's local storage
 
@@ -73,4 +81,4 @@ The planned assistant is an interpretation and orchestration layer, not an autho
 
 Designed and built by **777** (pronounced "seven sete"), Discord `777.imt`.
 
-The project is private while it is in development and will be made public when it is finished.
+The project is under active development and is public so the demo can be served with GitHub Pages.

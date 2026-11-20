@@ -1,8 +1,13 @@
 const $=s=>document.querySelector(s);
 const KEY="overkill:v1";
-const st={mode:"DEG",prec:12,hist:[],ans:0};
-function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||"{}");if(d.mode==="DEG"||d.mode==="RAD")st.mode=d.mode;if([8,12,15].includes(d.prec))st.prec=d.prec;if(Array.isArray(d.hist))st.hist=d.hist.slice(0,100);if(typeof d.ans==="number")st.ans=d.ans}catch(e){}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+const st={mode:"DEG",prec:12,hist:[],ans:0,vars:Object.create(null),fns:Object.create(null),info:""};
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||"{}");if(d.mode==="DEG"||d.mode==="RAD")st.mode=d.mode;if([8,12,15].includes(d.prec))st.prec=d.prec;if(Array.isArray(d.hist))st.hist=d.hist.slice(0,100);if(typeof d.ans==="number")st.ans=d.ans;loadExtra(d)}catch(e){}}
+function loadExtra(d){
+  const ok=n=>/^[A-Za-z_]\w*$/.test(n);
+  if(d.vars&&typeof d.vars==="object")for(const k of Object.keys(d.vars))if(ok(k)&&Number.isFinite(d.vars[k]))st.vars[k]=d.vars[k];
+  if(d.fns&&typeof d.fns==="object")for(const k of Object.keys(d.fns)){const f=d.fns[k];if(ok(k)&&f&&Array.isArray(f.p)&&f.p.length&&f.p.every(x=>typeof x==="string"&&ok(x))&&typeof f.b==="string")st.fns[k]={p:f.p,b:f.b}}
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st,(k,v)=>k==="info"?undefined:v))}catch(e){}}
 
 class CalcError extends Error{constructor(kind,msg,pos){super(msg);this.kind=kind;this.pos=pos}}
 const dom=(m,p)=>new CalcError("domínio",m,p);
@@ -48,7 +53,8 @@ function tokenize(s){
   return out;
 }
 
-function evaluate(src){
+function evaluate(src,scope,depth){
+  scope=scope||Object.create(null);depth=depth||0;
   const t=tokenize(src);let i=0;const end=src.trimEnd().length;
   const peek=()=>t[i],next=()=>t[i++];
   const isOp=(v)=>peek()&&peek().t==="op"&&peek().v===v;
@@ -92,8 +98,26 @@ function evaluate(src){
     if(k.t==="op"&&k.v==="("){const v=expr();if(!isOp(")"))throw new CalcError("sintaxe","Faltou fechar o parêntese",peek()?peek().p:end);next();return v}
     if(k.t==="id"){
       if(k.v==="ans")return st.ans;
-      if(k.v in CONST&&!isOp("("))return CONST[k.v];
-      const f=FN[k.v];
+      if(k.v==="solve"&&isOp("(")){
+        next();const n=next();
+        if(!n||n.t!=="id"||!(n.v in st.fns)||st.fns[n.v].p.length!==1)throw new CalcError("sintaxe","solve exige o nome de uma fórmula com um parâmetro, como f(x)",n?n.p:k.p);
+        const nums=[];while(isOp(",")){next();nums.push(expr())}
+        if(!isOp(")"))throw new CalcError("sintaxe","Faltou fechar o parêntese",peek()?peek().p:end);
+        next();
+        if(nums.length<1||nums.length>2)throw new CalcError("sintaxe","Use solve(f, chute) ou solve(f, a, b)",k.p);
+        try{return fin(solveRoot(n.v,nums[0],nums[1],depth))}catch(e){if(e instanceof CalcError&&e.pos===undefined)e.pos=k.p;throw e}
+      }
+      if(k.v in st.fns&&isOp("(")){
+        next();const args=[];
+        if(!isOp(")")){args.push(expr());while(isOp(",")){next();args.push(expr())}}
+        if(!isOp(")"))throw new CalcError("sintaxe","Faltou fechar o parêntese",peek()?peek().p:end);
+        next();
+        try{return fin(callUser(k.v,args,depth+1))}catch(e){if(e instanceof CalcError&&e.pos===undefined)e.pos=k.p;throw e}
+      }
+      if(k.v in scope)return scope[k.v];
+      if(k.v in st.vars)return st.vars[k.v];
+      if(Object.hasOwn(CONST,k.v)&&!isOp("("))return CONST[k.v];
+      const f=Object.hasOwn(FN,k.v)?FN[k.v]:undefined;
       if(!f)throw new CalcError("sintaxe","Nome desconhecido “"+k.v+"”",k.p);
       let args=[];
       if(isOp("(")){
@@ -115,6 +139,75 @@ function evaluate(src){
   return v;
 }
 
+function callUser(name,args,depth){
+  const f=st.fns[name];
+  if(args.length!==f.p.length)throw new CalcError("sintaxe","“"+name+"” espera "+f.p.length+" argumento(s)");
+  if(depth>=40)throw new CalcError("numérico","Recursão profunda demais em “"+name+"”");
+  const sc=Object.create(null);f.p.forEach((n,i)=>sc[n]=args[i]);
+  try{return evaluate(f.b,sc,depth)}catch(e){if(e instanceof CalcError)throw new CalcError(e.kind,"em "+name+": "+e.message);throw e}
+}
+function solveRoot(name,a,b,depth){
+  const g=x=>callUser(name,[x],depth+1);
+  const tol=1e-12;let it=0;
+  const done=(m,x)=>{st.info="método: "+m+", iterações: "+it+", |f(x)|≈"+Math.abs(g(x)).toExponential(2)+", tolerância: "+tol.toExponential(0);return x};
+  if(b!==undefined){
+    let lo=a,hi=b,fl=g(lo);const fh=g(hi);
+    if(fl===0)return done("bisseção",lo);
+    if(fh===0)return done("bisseção",hi);
+    if(fl*fh>0)throw dom("f(a) e f(b) têm o mesmo sinal: sem raiz garantida no intervalo");
+    while(it<200){it++;const mid=(lo+hi)/2,fm=g(mid);
+      if(fm===0||(hi-lo)/2<tol)return done("bisseção",mid);
+      if(fl*fm<0)hi=mid;else{lo=mid;fl=fm}}
+    throw new CalcError("numérico","Bisseção não convergiu");
+  }
+  let x=a;
+  while(it<50){it++;const fx=g(x);
+    if(Math.abs(fx)<tol)return done("Newton",x);
+    const h=1e-6*Math.max(1,Math.abs(x)),d=(g(x+h)-g(x-h))/(2*h);
+    if(d===0||!Number.isFinite(d))throw new CalcError("numérico","Derivada nula ou indefinida; tente outro chute");
+    const nx=x-fx/d;
+    if(!Number.isFinite(nx))throw new CalcError("numérico","Newton divergiu; tente outro chute ou um intervalo");
+    if(Math.abs(nx-x)<tol*Math.max(1,Math.abs(x)))return done("Newton",nx);
+    x=nx}
+  throw new CalcError("numérico","Newton não convergiu em 50 iterações; tente outro chute ou um intervalo");
+}
+const reserved=n=>Object.hasOwn(FN,n)||Object.hasOwn(CONST,n)||n==="ans"||n==="solve";
+function execute(src){
+  st.info="";
+  const at=(body,off)=>{try{return evaluate(body)}catch(e){if(e instanceof CalcError&&e.pos!==undefined)e.pos+=off;throw e}};
+  let m=src.match(/^\s*([A-Za-z_]\w*)\s*\(\s*([A-Za-z_]\w*(?:\s*,\s*[A-Za-z_]\w*)*)\s*\)\s*=(?!=)\s*(.+)$/);
+  if(m){
+    const name=m[1].toLowerCase(),p=m[2].split(/\s*,\s*/).map(x=>x.toLowerCase()),b=m[3].trim();
+    if(reserved(name))throw new CalcError("sintaxe","“"+name+"” é um nome reservado",0);
+    if(new Set(p).size!==p.length||p.some(reserved))throw new CalcError("sintaxe","Parâmetros inválidos ou repetidos",0);
+    const probe=Object.create(null);p.forEach(n=>probe[n]=1);
+    try{evaluate(b,probe,0)}catch(e){
+      if(!(e instanceof CalcError)||e.kind==="sintaxe"){if(e instanceof CalcError&&e.pos!==undefined)e.pos+=src.length-m[3].length;throw e}
+    }
+    st.fns[name]={p,b};
+    return {r:name+"("+p.join(", ")+") definida"};
+  }
+  m=src.match(/^\s*([A-Za-z_]\w*)\s*=(?!=)\s*(.+)$/);
+  if(m){
+    const nm=m[1].toLowerCase();
+    if(reserved(nm))throw new CalcError("sintaxe","“"+nm+"” é um nome reservado",0);
+    const v=at(m[2],src.length-m[2].length);
+    st.vars[nm]=v;
+    return {r:nm+" = "+fmt(v),v};
+  }
+  const v=evaluate(src);
+  return {r:fmt(v),v};
+}
+function renderVars(){
+  const ul=$("#vars");ul.textContent="";
+  const add=(label,del)=>{
+    const li=document.createElement("li"),s=document.createElement("span"),b=document.createElement("button");
+    s.textContent=label;b.type="button";b.textContent="×";b.setAttribute("aria-label","Remover "+label);
+    b.onclick=()=>{del();save();renderVars()};li.append(s,b);ul.append(li);
+  };
+  for(const k of Object.keys(st.vars))add(k+" = "+fmt(st.vars[k]),()=>{delete st.vars[k]});
+  for(const k of Object.keys(st.fns))add(k+"("+st.fns[k].p.join(", ")+") = "+st.fns[k].b,()=>{delete st.fns[k]});
+}
 function fmt(x){
   if(Object.is(x,-0))x=0;
   if(Number.isInteger(x)&&Math.abs(x)<1e15)return String(x);
@@ -135,19 +228,19 @@ function live(){
   err.textContent="";
   const s=ex.value;
   if(!s.trim()){res.textContent=lastText;return}
-  try{res.textContent="= "+fmt(evaluate(s));res.dataset.v=res.textContent.slice(2)}catch(e){res.textContent=""}
+  try{st.info="";const v=evaluate(s);res.textContent="= "+fmt(v);res.dataset.v=res.textContent.slice(2);$("#info").textContent=st.info}catch(e){res.textContent="";$("#info").textContent=""}
 }
 function commit(){
   let s=ex.value;
   if(!s.trim())return;
   if(/^\s*[*\/^×÷]/.test(s))s="ans"+s;
   try{
-    const v=evaluate(s);
-    st.ans=v;
-    const r=fmt(v);
+    const o=execute(s);
+    if(o.v!==undefined)st.ans=o.v;
+    const r=o.r;
     st.hist.unshift({e:s,r});st.hist=st.hist.slice(0,100);
-    prev.textContent=s;lastText=r;res.textContent=r;res.dataset.v=r;ex.value="";err.textContent="";
-    save();renderHist();
+    prev.textContent=s;lastText=r;res.textContent=r;res.dataset.v=r;ex.value="";err.textContent="";$("#info").textContent=st.info;
+    save();renderHist();renderVars();
   }catch(e){showErr(e)}
 }
 function insert(txt){
@@ -208,5 +301,5 @@ $("#prec").onchange=e=>{st.prec=parseInt(e.target.value,10);save();live()};
 $("#clr").onclick=()=>{if(st.hist.length&&confirm("Apagar todo o histórico?")){st.hist=[];save();renderHist()}};
 
 load();
-$("#mode").textContent=st.mode;$("#prec").value=String(st.prec);renderHist();
+$("#mode").textContent=st.mode;$("#prec").value=String(st.prec);renderHist();renderVars();
 if(matchMedia("(pointer:fine)").matches)ex.focus();else ex.setAttribute("inputmode","none");

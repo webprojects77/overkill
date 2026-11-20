@@ -4,7 +4,7 @@
 
 > Feito por **777** ("seven sete") · Discord: `777.imt`
 
-[Read in English](README.md)
+[Read in English](README.md) · Demo ao vivo: https://webprojects77.github.io/overkill/
 
 ## O que é o OVERKILL?
 
@@ -26,7 +26,7 @@ A promessa do produto não é resolver qualquer problema imaginável. É oferece
 
 Expressões nunca são executadas como JavaScript. A entrada passa por um tokenizador e um parser descendente recursivo com lista fixa de operações e funções permitidas. Erros de sintaxe e de domínio (divisão por zero, raiz de número negativo, logaritmo fora do domínio, overflow) são reportados com o tipo do erro e a posição na expressão, e o motor nunca devolve silenciosamente um valor com cara de válido quando o cálculo falha.
 
-## Estado atual: Fase 1 (calculadora básica)
+## Estado atual: Fase 1 concluída, Fase 2 em andamento
 
 Implementado hoje:
 
@@ -39,7 +39,13 @@ Implementado hoje:
 - Tema escuro grafite com acentos violeta e ciano, e tema claro seguindo o sistema
 - Funciona totalmente offline no navegador, sem conta e sem servidor
 
-Ainda não implementado (veja [docs/ROADMAP.md](docs/ROADMAP.md)): álgebra simbólica, matrizes, Graph Studio, notebook, laboratórios especializados, SDK de plugins, Oracle (assistente de IA), PWA.
+Fase 2 até agora:
+
+- Variáveis (`x=5`) e fórmulas nomeadas com parâmetros (`f(x,y)=x^2+y`), salvas localmente e removíveis por um painel
+- Resolução numérica de raízes com `solve(f, chute)` (Newton, derivada numérica) e `solve(f, a, b)` (bisseção), sempre informando método, iterações, resíduo e tolerância
+- Módulo de matrizes: determinante, inversa (com número de condicionamento e aviso de mal condicionamento), transposta, posto, produto e sistemas lineares `Ax = b` por eliminação de Gauss-Jordan com pivotamento parcial e resíduo informado. As entradas aceitam expressões, então o módulo usa o mesmo motor
+
+Ainda não implementado (veja [docs/ROADMAP.md](docs/ROADMAP.md)): racionais exatos, decimais e números complexos, álgebra simbólica, Graph Studio, notebook, laboratórios especializados, SDK de plugins, Oracle (assistente de IA), PWA.
 
 ## Como rodar
 
@@ -53,7 +59,8 @@ python3 -m http.server 8000
 
 ```
 index.html        ponto de entrada
-src/engine.js     parser, avaliador, formatação e lógica da interface
+src/engine.js     parser, avaliador, variáveis, fórmulas, solver e lógica da interface
+src/matrix.js     módulo de álgebra linear (matrizes, sistemas)
 src/style.css     estilos e tokens de tema
 docs/ROADMAP.md   fases, status e decisões
 ```
@@ -61,7 +68,8 @@ docs/ROADMAP.md   fases, status e decisões
 ## Limitações conhecidas
 
 - Apenas aritmética de ponto flutuante binário; racionais exatos, inteiros de precisão arbitrária e decimais estão planejados
-- Ainda sem cálculo simbólico
+- Ainda sem cálculo simbólico; fórmulas do usuário não podem ser recursivas
+- Matrizes limitadas a 12×12; sistemas precisam ser quadrados
 - A entrada numérica usa `.` como separador decimal e `,` ou `;` como separador de argumentos
 - O histórico fica no armazenamento local do navegador
 
@@ -73,4 +81,4 @@ O assistente planejado é uma camada de interpretação e orquestração, não u
 
 Idealizado e feito por **777** (lê-se "seven sete"), Discord `777.imt`.
 
-O projeto está privado durante o desenvolvimento e será aberto ao público quando estiver finalizado.
+O projeto está em desenvolvimento ativo e é público para que a demonstração seja servida pelo GitHub Pages.

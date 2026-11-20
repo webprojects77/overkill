@@ -6,7 +6,7 @@ Status: `done` · `next` · `planned`
 |---|---|---|
 | 0 | Foundation: name, stack, conventions, architecture notes | done |
 | 1 | Excellent calculator: safe parser, scientific functions, history, precision, keyboard | done |
-| 2 | Math engine: variables, named formulas, decimal/rational/complex, matrices, linear systems, numeric solving | next |
+| 2 | Math engine: variables, named formulas, matrices, linear systems, numeric solving (done); decimal/rational/complex (next) | in progress |
 | 3 | Graph Studio and Geometry: 2D plots, tracer, zoom/pan, parametric, polar, draggable constructions | planned |
 | 4 | Notebook and projects: project format, cells, dependencies, export | planned |
 | 5 | Specialized modules: statistics, Dev Core, unit converter, Physics Lab, CSV import | planned |
