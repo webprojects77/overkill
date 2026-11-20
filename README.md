@@ -66,4 +66,4 @@ O OVERKILL é uma calculadora que está virando um ambiente matemático completo
 
 ## Créditos
 
-Feito por **777** ("seven sete"), Discord `777.imt`.
+Feito por **777**  Discord `777.imt`.
