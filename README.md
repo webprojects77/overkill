@@ -15,6 +15,8 @@ OVERKILL is a calculator that is growing into a complete math environment: scien
 - Numeric solver: `solve(f, guess)` (Newton) and `solve(f, a, b)` (bisection), showing method, iterations, residual and tolerance
 - Matrices: determinant, inverse, transpose, rank, product and linear systems `Ax = b`
 - Graph Studio: `y = f(x)`, polar and parametric curves, up to 4 at once, zoom, pan, point tracer, roots in the visible window, PNG export
+- Unit converter (length, mass, time, area, volume, speed, energy, pressure, data, temperature) that only converts inside the same category
+- Developer tools: base conversion from 2 to 36, bitwise operations with 8/16/32/64-bit width, IEEE 754 viewer (double and float) and color converter (HEX, RGB, HSL)
 - Dark red and black theme
 
 ## Coming in future versions
@@ -22,7 +24,7 @@ OVERKILL is a calculator that is growing into a complete math environment: scien
 - Exact fractions, decimals and complex numbers
 - Symbolic algebra (simplify, expand, factor, derivatives, integrals)
 - Graphs: implicit curves, 3D surfaces, intersections and extrema, SVG export
-- Geometry, statistics, unit converter and developer tools
+- Geometry and statistics
 - Notebook with executable cells and saved projects
 - Plugins
 - AI assistant that uses the calculator's own engine to compute
@@ -51,6 +53,8 @@ O OVERKILL é uma calculadora que está virando um ambiente matemático completo
 - Solver numérico: `solve(f, chute)` (Newton) e `solve(f, a, b)` (bisseção), mostrando método, iterações, resíduo e tolerância
 - Matrizes: determinante, inversa, transposta, posto, produto e sistemas lineares `Ax = b`
 - Graph Studio: curvas `y = f(x)`, polares e paramétricas, até 4 ao mesmo tempo, zoom, arrastar, rastreador de ponto, raízes na janela visível, exportar PNG
+- Conversor de unidades (comprimento, massa, tempo, área, volume, velocidade, energia, pressão, dados, temperatura) que só converte dentro da mesma categoria
+- Ferramentas para programadores: conversão de bases de 2 a 36, operações bit a bit com largura de 8/16/32/64 bits, visualizador IEEE 754 (double e float) e conversor de cores (HEX, RGB, HSL)
 - Tema escuro em preto e vermelho
 
 ## O que vem nas próximas versões
@@ -58,7 +62,7 @@ O OVERKILL é uma calculadora que está virando um ambiente matemático completo
 - Frações exatas, decimais e números complexos
 - Álgebra simbólica (simplificar, expandir, fatorar, derivadas, integrais)
 - Gráficos: curvas implícitas, superfícies 3D, interseções e extremos, exportar SVG
-- Geometria, estatística, conversor de unidades e ferramentas para programadores
+- Geometria e estatística
 - Notebook com células executáveis e projetos salvos
 - Plugins
 - Assistente de IA que usa o próprio motor da calculadora para calcular

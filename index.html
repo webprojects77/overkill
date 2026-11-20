@@ -26,6 +26,7 @@
 <button type="button" data-tab="calc" aria-pressed="true">Calculadora</button>
 <button type="button" data-tab="mat" aria-pressed="false">Matrizes</button>
 <button type="button" data-tab="gr" aria-pressed="false">Gráfico</button>
+<button type="button" data-tab="tl" aria-pressed="false">Ferramentas</button>
 </nav>
 <div id="calcview">
 <section class="screen" aria-live="polite">
@@ -96,9 +97,41 @@ x^2/4-1</textarea>
 <div id="grInfo" aria-live="polite"></div>
 </div>
 </section>
+<section id="tl" hidden>
+<div class="screen">
+<select id="tlSel" class="wide" aria-label="Ferramenta">
+<option value="un">Conversor de unidades</option>
+<option value="bs">Bases e operações com bits</option>
+<option value="fp">Ponto flutuante IEEE 754</option>
+<option value="cl">Cores</option>
+</select>
+<div data-tool="un">
+<div class="row"><select id="unCat" aria-label="Categoria"></select></div>
+<div class="row"><input id="unVal" value="1" aria-label="Valor"><select id="unFrom" aria-label="De"></select><select id="unTo" aria-label="Para"></select></div>
+<pre class="out" id="unOut"></pre>
+</div>
+<div data-tool="bs" hidden>
+<div class="row"><input id="bsIn" value="ff" aria-label="Número A"><select id="bsBase" aria-label="Base"></select></div>
+<div class="row"><input id="bsB" value="f" aria-label="Número B">
+<select id="bsOp" aria-label="Operação"><option value="and">AND</option><option value="or">OR</option><option value="xor">XOR</option><option value="not">NOT</option><option value="shl">&lt;&lt;</option><option value="shr">&gt;&gt;</option></select>
+<select id="bsW" aria-label="Largura em bits"><option>8</option><option>16</option><option selected>32</option><option>64</option></select></div>
+<pre class="out" id="bsOut"></pre>
+</div>
+<div data-tool="fp" hidden>
+<div class="row"><input id="fpIn" value="0.1" aria-label="Número ou expressão"></div>
+<pre class="out" id="fpOut"></pre>
+</div>
+<div data-tool="cl" hidden>
+<div class="row"><input id="clIn" value="#ff2a2a" aria-label="Cor"></div>
+<div id="sw"></div>
+<pre class="out" id="clOut"></pre>
+</div>
+</div>
+</section>
 </main>
 <script src="src/engine.js"></script>
 <script src="src/matrix.js"></script>
 <script src="src/graph.js"></script>
+<script src="src/tools.js"></script>
 </body>
 </html>

@@ -68,7 +68,7 @@ function matUI(){
   $("#matGo").onclick=run;
   document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{
     document.querySelectorAll("[data-tab]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
-    for(const [k,id] of [["calc","#calcview"],["mat","#mat"],["gr","#gr"]])$(id).hidden=b.dataset.tab!==k;
+    for(const [k,id] of [["calc","#calcview"],["mat","#mat"],["gr","#gr"],["tl","#tl"]])$(id).hidden=b.dataset.tab!==k;
   });
 }
 if(typeof document!=="undefined"&&document.getElementById("mat"))matUI();
