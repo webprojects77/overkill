@@ -14,7 +14,6 @@ A promessa do produto não é resolver qualquer problema imaginável. É oferece
 
 ## Princípios
 
-- **Precisão antes de espetáculo.** Uma animação bonita nunca compensa um resultado errado.
 - **Explicabilidade.** Mostrar fórmula, unidade, método, precisão e limitações relevantes.
 - **Composição.** Todos os módulos compartilham o mesmo motor, unidades, variáveis e histórico.
 - **Privacidade por padrão.** Cálculos e arquivos ficam locais, salvo compartilhamento explícito.
