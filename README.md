@@ -1,6 +1,6 @@
 # OVERKILL
 
-> Made by **777** ("seven sete") · Discord: `777.imt`
+> Made by **777** · Discord: `777.imt`
 
 ## What it is
 
@@ -30,7 +30,7 @@ OVERKILL is a calculator that is growing into a complete math environment: scien
 
 ## Credits
 
-Made by **777** ("seven sete"), Discord `777.imt`.
+Made by **777**, Discord `777.imt`.
 
 ---
 
