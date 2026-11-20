@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>OVERKILL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
@@ -22,6 +25,7 @@
 <nav class="tabs" aria-label="Módulos">
 <button type="button" data-tab="calc" aria-pressed="true">Calculadora</button>
 <button type="button" data-tab="mat" aria-pressed="false">Matrizes</button>
+<button type="button" data-tab="gr" aria-pressed="false">Gráfico</button>
 </nav>
 <div id="calcview">
 <section class="screen" aria-live="polite">
@@ -63,8 +67,38 @@
 <pre id="matOut" aria-live="polite"></pre>
 </div>
 </section>
+<section id="gr" hidden>
+<div class="screen">
+<div class="row">
+<select id="grMode" aria-label="Tipo de gráfico">
+<option value="cart">y = f(x)</option>
+<option value="polar">polar r = f(t)</option>
+<option value="par">paramétrico x(t); y(t)</option>
+</select>
+<button id="grPlot" type="button">Plotar</button>
+</div>
+<label for="grIn">Até 4 curvas, uma por linha</label>
+<textarea id="grIn" rows="3" spellcheck="false">sin(x)
+x^2/4-1</textarea>
+<div class="row">
+<input id="grT0" value="0" aria-label="t inicial" inputmode="text">
+<input id="grT1" value="4pi" aria-label="t final" inputmode="text">
+</div>
+<p class="hint">Cartesiano usa x. Polar e paramétrico usam t no intervalo acima. Ângulos em radianos.</p>
+<canvas id="grCv" role="img" aria-label="Gráfico das funções"></canvas>
+<div class="row">
+<button id="grZi" type="button" aria-label="Aproximar">+</button>
+<button id="grZo" type="button" aria-label="Afastar">−</button>
+<button id="grRs" type="button">Reset</button>
+<button id="grRt" type="button">Raízes</button>
+<button id="grPng" type="button">PNG</button>
+</div>
+<div id="grInfo" aria-live="polite"></div>
+</div>
+</section>
 </main>
 <script src="src/engine.js"></script>
 <script src="src/matrix.js"></script>
+<script src="src/graph.js"></script>
 </body>
 </html>
