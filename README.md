@@ -14,7 +14,6 @@ The product promise is not "solve any problem imaginable". It is a broad, consis
 
 ## Principles
 
-- **Accuracy over spectacle.** A pretty animation never compensates for a wrong result.
 - **Explainability.** Show formula, unit, method, precision and relevant limitations.
 - **Composition.** Every module shares the same engine, units, variables and history.
 - **Privacy by default.** Calculations and files stay local unless the user explicitly shares them.
