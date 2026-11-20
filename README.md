@@ -2,7 +2,7 @@
 
 **The math platform that refuses to be just a calculator.**
 
-> Made by **777** ("seven sete") · Discord: `777.imt`
+> Made by **777**  · Discord: `777.imt`
 
 [Leia em português](README.pt-BR.md) · Live demo: https://webprojects77.github.io/overkill/
 
