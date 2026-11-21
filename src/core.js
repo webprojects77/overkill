@@ -1,5 +1,5 @@
 const $=s=>document.querySelector(s);
-const st={mode:"DEG",prec:12,hist:[],ans:0,num:"R",vars:Object.create(null),fns:Object.create(null),info:""};
+const st={mode:"DEG",prec:12,hist:[],ans:0,num:"R",dd:50,dans:"",vars:Object.create(null),fns:Object.create(null),info:""};
 class CalcError extends Error{constructor(kind,msg,pos){super(msg);this.kind=kind;this.pos=pos}}
 const dom=(m,p)=>new CalcError("domínio",m,p);
 function errText(e){
@@ -45,7 +45,7 @@ function tokenize(s){
   const out=[];let m;
   while(re.lastIndex<s.length&&(m=re.exec(s))){
     const txt=m[1]||m[2]||m[3]||m[4];const p=m.index+m[0].length-txt.length;
-    if(m[1])out.push({t:"num",v:parseFloat(m[1]),p});
+    if(m[1])out.push({t:"num",v:parseFloat(m[1]),s:m[1],p});
     else if(m[2])out.push({t:"id",v:m[2].toLowerCase(),p});
     else if(m[3])out.push({t:"id",v:{"π":"pi","τ":"tau","√":"sqrt"}[m[3]],p});
     else{
@@ -206,6 +206,7 @@ function solveRoot(name,a,b,depth){
 const reserved=n=>Object.hasOwn(FN,n)||Object.hasOwn(CONST,n)||n==="ans"||n==="solve";
 function execute(src){
   st.info="";
+  if(st.num==="D"){const o=evalAny(src);st.dans=o.d;return o}
   if(st.num!=="R")return evalAny(src);
   const at=(body,off)=>{try{return evaluate(body)}catch(e){if(e instanceof CalcError&&e.pos!==undefined)e.pos+=off;throw e}};
   let m=src.match(/^\s*([A-Za-z_]\w*)\s*\(\s*([A-Za-z_]\w*(?:\s*,\s*[A-Za-z_]\w*)*)\s*\)\s*=(?!=)\s*(.+)$/);

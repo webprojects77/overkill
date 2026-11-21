@@ -2,7 +2,7 @@ const {load,harness,dom}=require("./helpers");
 const T=harness(),store={},d=dom();
 class Blob{constructor(p,o){this.p=p;this.o=o}}
 const stubs={document:d.document,localStorage:{getItem:k=>store[k]===undefined?null:store[k],setItem:(k,v)=>{store[k]=v}},Blob,URL:{createObjectURL:()=>"blob:x",revokeObjectURL(){}},prompt:()=>null,confirm:()=>true,FileReader:class{}};
-const {get}=load(["src/core.js","src/algebra.js","src/notebook.js"],stubs);
+const {get}=load(["src/core.js","src/algebra.js","src/decimal.js","src/notebook.js"],stubs);
 const NB=get("NB"),st=get("st"),CalcError=get("CalcError"),Err=get("Error");
 const J=x=>JSON.stringify(x),ex=NB.example();
 st.vars.x=99;st.ans=7;st.num="R";st.mode="DEG";
@@ -12,6 +12,8 @@ T.ok("isolamento",st.vars.x===99&&!("capital" in st.vars)&&!("f" in st.fns)&&st.
 const e1=NB.run({name:"t",num:"R",mode:"DEG",cells:[{k:"calc",s:"y=1/0\nz=2\nz*3"},{k:"calc",s:"y+1"}]});
 T.ok("erro e continuação",e1[0][0].err.includes("domínio")&&e1[0][2].r==="6",e1);T.ok("var de linha com erro inexistente",e1[1][0].err.includes("Nome desconhecido"),e1[1]);
 T.eq("modo Q",NB.run({name:"t",num:"Q",mode:"DEG",cells:[{k:"calc",s:"1/3+1/6"}]})[0][0].r,"1/2");T.ok("restaura",st.num==="R"&&st.mode==="DEG");
+const nd=NB.run({name:"t",num:"D",dd:30,mode:"DEG",cells:[{k:"calc",s:"1/3\nans*3"}]})[0];T.eq("modo Dec 30 dígitos",nd[0].r,"0.333333333333333333333333333333");T.eq("ans exato no notebook",nd[1].r,"1");T.ok("Dec restaura",st.num==="R"&&st.dd===50&&st.dans==="");
+T.eq("proj dd padrão",NB.proj({name:"x",num:"D",cells:[]}).dd,50);T.eq("proj dd válido",NB.proj({name:"x",num:"D",dd:200,cells:[]}).dd,200);T.eq("proj dd inválido",NB.proj({name:"x",num:"D",dd:7,cells:[]}).dd,50);T.eq("proj aceita Dec",NB.proj({name:"x",num:"D",cells:[]}).num,"D");
 T.eq("RAD",NB.run({name:"t",num:"R",mode:"RAD",cells:[{k:"calc",s:"sin(pi/2)"}]})[0][0].r,"1");T.eq("DEG",NB.run({name:"t",num:"R",mode:"DEG",cells:[{k:"calc",s:"sin(30)"}]})[0][0].r,"0.5");
 const cm=NB.run({name:"t",num:"R",mode:"DEG",cells:[{k:"calc",s:"# comentário\n\n2+2"}]});T.ok("comentários ignorados",cm[0].length===1&&cm[0][0].r==="4",cm);
 T.eq("modo C",NB.run({name:"t",num:"C",mode:"DEG",cells:[{k:"calc",s:"sqrt(-4)"}]})[0][0].r,"2i");
@@ -29,7 +31,7 @@ const cells=d.q("#nbCells"),outFor=i=>cells.kids[i].kids[2];
 T.eq("UI 4 células",cells.kids.length,4);T.ok("UI saída",J(outFor(1).kids).includes("1628.89462678"));T.eq("UI persistiu ao abrir",JSON.parse(store[get("NB").STORE]).cur,"p1");
 cells.kids[1].kids[0].kids[0].onclick();T.eq("UI mover",JSON.parse(store[NB.STORE]).projects.p1.cells[0].k,"calc");
 d.q("#nbAddC").onclick();T.eq("UI adicionar",cells.kids.length,5);cells.kids[0].kids[0].kids[2].onclick();T.eq("UI remover",cells.kids.length,4);
-d.q("#nbNum").value="Q";d.q("#nbNum").onchange();T.eq("UI conjunto",JSON.parse(store[NB.STORE]).projects.p1.num,"Q");d.q("#nbNum").value="R";d.q("#nbNum").onchange();
+d.q("#nbNum").value="Q";d.q("#nbNum").onchange();T.eq("UI conjunto",JSON.parse(store[NB.STORE]).projects.p1.num,"Q");d.q("#nbNum").value="D";d.q("#nbNum").onchange();T.ok("UI Dec mostra dígitos",d.q("#nbDd").hidden===false);d.q("#nbDd").value="100";d.q("#nbDd").onchange();T.eq("UI dígitos",JSON.parse(store[NB.STORE]).projects.p1.dd,100);d.q("#nbNum").value="R";d.q("#nbNum").onchange();
 d.q("#nbNew").onclick();T.ok("UI novo",Object.keys(JSON.parse(store[NB.STORE]).projects).length===2&&cells.kids.length===1);
 d.q("#nbMd").onclick();d.q("#nbExp").onclick();T.ok("UI exportar",d.q("#nbMsg").textContent.includes("json"));
 d.q("#nbDel").onclick();T.eq("UI excluir",Object.keys(JSON.parse(store[NB.STORE]).projects).length,1);

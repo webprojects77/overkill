@@ -1,7 +1,7 @@
 const NB={
   STORE:"overkill:nb:v1",
-  blank:name=>({name:name||"Novo notebook",num:"R",mode:"DEG",cells:[{k:"calc",s:""}]}),
-  example:()=>({name:"Meu primeiro notebook",num:"R",mode:"DEG",cells:[
+  blank:name=>({name:name||"Novo notebook",num:"R",dd:50,mode:"DEG",cells:[{k:"calc",s:""}]}),
+  example:()=>({name:"Meu primeiro notebook",num:"R",dd:50,mode:"DEG",cells:[
     {k:"note",s:"Juros compostos: quanto rendem R$ 1000 a 5% ao ano?"},
     {k:"calc",s:"capital=1000\ntaxa=0.05\nf(n)=capital*(1+taxa)^n\nf(10)"},
     {k:"note",s:"Em quantos anos o dinheiro dobra? Resolva f(n)=2000."},
@@ -12,7 +12,8 @@ const NB={
     const cells=(Array.isArray(x.cells)?x.cells:[]).slice(0,200).filter(c=>c&&(c.k==="calc"||c.k==="note")&&typeof c.s==="string").map(c=>({k:c.k,s:c.s.slice(0,20000)}));
     return {
       name:(typeof x.name==="string"&&x.name.trim()?x.name.trim():"Notebook").slice(0,80),
-      num:["R","C","Q"].includes(x.num)?x.num:"R",
+      num:["R","C","Q","D"].includes(x.num)?x.num:"R",
+      dd:DD_OPTS.includes(x.dd)?x.dd:50,
       mode:x.mode==="RAD"?"RAD":"DEG",
       cells:cells.length?cells:[{k:"calc",s:""}]
     };
@@ -44,13 +45,13 @@ const NB={
     }).filter(Boolean);
   },
   run(p){
-    const keep={vars:st.vars,fns:st.fns,ans:st.ans,num:st.num,mode:st.mode,info:st.info};
-    st.vars=Object.create(null);st.fns=Object.create(null);st.ans=0;st.num=p.num;st.mode=p.mode;
+    const keep={vars:st.vars,fns:st.fns,ans:st.ans,dans:st.dans,num:st.num,dd:st.dd,mode:st.mode,info:st.info};
+    st.vars=Object.create(null);st.fns=Object.create(null);st.ans=0;st.dans="";st.num=p.num;st.dd=p.dd;st.mode=p.mode;
     try{return p.cells.map(c=>c.k==="calc"?NB.cell(c.s):null)}
     finally{Object.assign(st,keep)}
   },
   markdown(p){
-    const res=NB.run(p),out=["# "+p.name,"","Conjunto numérico: "+p.num+" · ângulos: "+p.mode,""];
+    const res=NB.run(p),out=["# "+p.name,"","Conjunto numérico: "+(p.num==="D"?"Dec ("+p.dd+" dígitos)":p.num)+" · ângulos: "+p.mode,""];
     p.cells.forEach((c,i)=>{
       if(c.k==="note"){out.push(c.s,"");return}
       out.push("```",c.s,"```");
@@ -90,7 +91,7 @@ function notebookUI(){
   function fillSel(){
     const s=$("#nbSel");s.textContent="";
     Object.keys(S.projects).forEach(id=>{const o=document.createElement("option");o.value=id;o.textContent=S.projects[id].name;s.append(o)});
-    s.value=S.cur;$("#nbNum").value=P().num;$("#nbMode").value=P().mode;
+    s.value=S.cur;$("#nbNum").value=P().num;$("#nbDd").value=String(P().dd);$("#nbDd").hidden=P().num!=="D";$("#nbMode").value=P().mode;
   }
   function render(){
     const box=$("#nbCells");box.textContent="";outs=[];
@@ -117,7 +118,8 @@ function notebookUI(){
     if(!Object.keys(S.projects).length)S.projects.p1=NB.blank("Notebook 1");
     S.cur=Object.keys(S.projects)[0];persist();fillSel();render();
   };
-  $("#nbNum").onchange=()=>{P().num=$("#nbNum").value;persist();runAll()};
+  $("#nbNum").onchange=()=>{P().num=$("#nbNum").value;$("#nbDd").hidden=P().num!=="D";persist();runAll()};
+  $("#nbDd").onchange=()=>{P().dd=parseInt($("#nbDd").value,10);persist();runAll()};
   $("#nbMode").onchange=()=>{P().mode=$("#nbMode").value;persist();runAll()};
   $("#nbAddC").onclick=()=>add("calc");
   $("#nbAddN").onclick=()=>add("note");

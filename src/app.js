@@ -1,7 +1,9 @@
 const KEY="overkill:v1";
 function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||"{}");if(d.mode==="DEG"||d.mode==="RAD")st.mode=d.mode;if([8,12,15].includes(d.prec))st.prec=d.prec;if(Array.isArray(d.hist))st.hist=d.hist.slice(0,100);if(typeof d.ans==="number")st.ans=d.ans;loadExtra(d)}catch(e){}}
 function loadExtra(d){
-  if(["R","C","Q"].includes(d.num))st.num=d.num;
+  if(["R","C","Q","D"].includes(d.num))st.num=d.num;
+  if(DD_OPTS.includes(d.dd))st.dd=d.dd;
+  if(typeof d.dans==="string"&&d.dans.length<5000&&/^-?\d+e-?\d+$/.test(d.dans))st.dans=d.dans;
   const ok=n=>/^[A-Za-z_]\w*$/.test(n);
   if(d.vars&&typeof d.vars==="object")for(const k of Object.keys(d.vars))if(ok(k)&&Number.isFinite(d.vars[k]))st.vars[k]=d.vars[k];
   if(d.fns&&typeof d.fns==="object")for(const k of Object.keys(d.fns)){const f=d.fns[k];if(ok(k)&&f&&Array.isArray(f.p)&&f.p.length&&f.p.every(x=>typeof x==="string"&&ok(x))&&typeof f.b==="string")st.fns[k]={p:f.p,b:f.b}}
@@ -101,11 +103,15 @@ async function copy(){
 res.onclick=copy;
 res.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();copy()}};
 $("#mode").onclick=()=>{st.mode=st.mode==="DEG"?"RAD":"DEG";$("#mode").textContent=st.mode;save();live()};
-$("#numMode").onclick=()=>{st.num={R:"C",C:"Q",Q:"R"}[st.num];$("#numMode").textContent={R:"ℝ",C:"ℂ",Q:"ℚ"}[st.num];save();live()};
+$("#numMode").onclick=()=>{st.num={R:"C",C:"Q",Q:"D",D:"R"}[st.num];syncNum();save();live()};
+$("#dprec").onchange=e=>{st.dd=parseInt(e.target.value,10);save();live()};
 $("#prec").onchange=e=>{st.prec=parseInt(e.target.value,10);save();live()};
 $("#clr").onclick=()=>{if(st.hist.length&&confirm("Apagar todo o histórico?")){st.hist=[];save();renderHist()}};
 
+const NUMLBL={R:"ℝ",C:"ℂ",Q:"ℚ",D:"Dec"};
+function syncNum(){$("#numMode").textContent=NUMLBL[st.num];$("#dprec").hidden=st.num!=="D";$("#prec").hidden=st.num==="D"}
+
 load();
-$("#numMode").textContent={R:"ℝ",C:"ℂ",Q:"ℚ"}[st.num];
+syncNum();$("#dprec").value=String(st.dd);
 $("#mode").textContent=st.mode;$("#prec").value=String(st.prec);renderHist();renderVars();
 if(matchMedia("(pointer:fine)").matches)ex.focus();else ex.setAttribute("inputmode","none");

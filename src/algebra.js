@@ -28,7 +28,7 @@ function evalAlg(src,A){
   function primary(){
     const k=next();
     if(!k)throw new CalcError("sintaxe","Expressão incompleta",end);
-    if(k.t==="num")return A.num(k.v,k.p);
+    if(k.t==="num")return A.num(k.v,k.p,k.s);
     if(k.t==="op"&&k.v==="("){const v=expr();close();return v}
     if(k.t==="id"){
       if(isOp("(")&&!A.isConst(k.v)){
@@ -200,6 +200,10 @@ const QA={
 function evalAny(src){
   if(st.num==="C")return {r:CX.show(evalAlg(src,CX))};
   if(st.num==="Q")return {r:QA.show(evalAlg(src,QA))};
+  if(st.num==="D"){
+    const d=evalAlg(src,DA),r=DA.show(d),sd=DA.str(d),v=Number(sd);
+    return Number.isFinite(v)?{r,d:sd,v}:{r,d:sd};
+  }
   const v=evaluate(src);
   return {r:fmt(v),v};
 }

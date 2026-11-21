@@ -18,12 +18,19 @@
 <header>
 <h1>OVERKILL</h1>
 <div class="opts">
-<button id="numMode" type="button" aria-label="Alternar conjunto numérico: reais, complexos ou frações exatas" title="ℝ reais · ℂ complexos · ℚ frações exatas">ℝ</button>
+<button id="numMode" type="button" aria-label="Alternar conjunto numérico: reais, complexos, frações exatas ou decimais de alta precisão" title="ℝ reais · ℂ complexos · ℚ frações exatas · Dec decimais de alta precisão">ℝ</button>
 <button id="mode" type="button" aria-label="Alternar modo angular">DEG</button>
 <select id="prec" aria-label="Precisão em dígitos significativos">
 <option value="8">8 dígitos</option>
 <option value="12">12 dígitos</option>
 <option value="15">15 dígitos</option>
+</select>
+<select id="dprec" aria-label="Dígitos do modo Dec" hidden>
+<option value="30">30 dígitos</option>
+<option value="50">50 dígitos</option>
+<option value="100">100 dígitos</option>
+<option value="200">200 dígitos</option>
+<option value="500">500 dígitos</option>
 </select>
 <button id="helpBtn" type="button" data-tab="help" aria-pressed="false" aria-label="Manual de instruções">?</button>
 </div>
@@ -160,7 +167,8 @@ x^2/4-1</textarea>
 <div class="screen">
 <div class="row"><select id="nbSel" aria-label="Notebook"></select><button id="nbNew" type="button">Novo</button></div>
 <div class="row"><button id="nbRen" type="button">Renomear</button><button id="nbDel" type="button">Excluir</button>
-<select id="nbNum" aria-label="Conjunto numérico do notebook"><option value="R">ℝ</option><option value="C">ℂ</option><option value="Q">ℚ</option></select>
+<select id="nbNum" aria-label="Conjunto numérico do notebook"><option value="R">ℝ</option><option value="C">ℂ</option><option value="Q">ℚ</option><option value="D">Dec</option></select>
+<select id="nbDd" aria-label="Dígitos do notebook no modo Dec" hidden><option value="30">30 dígitos</option><option value="50">50 dígitos</option><option value="100">100 dígitos</option><option value="200">200 dígitos</option><option value="500">500 dígitos</option></select>
 <select id="nbMode" aria-label="Ângulos do notebook"><option value="DEG">DEG</option><option value="RAD">RAD</option></select></div>
 <p class="hint">As células rodam de cima para baixo, com variáveis só deste notebook. Linhas com # são comentários.</p>
 </div>
@@ -180,6 +188,7 @@ x^2/4-1</textarea>
 </main>
 <script src="src/core.js"></script>
 <script src="src/algebra.js"></script>
+<script src="src/decimal.js"></script>
 <script src="src/app.js"></script>
 <script src="src/matrix.js"></script>
 <script src="src/graph.js"></script>

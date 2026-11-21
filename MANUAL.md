@@ -4,7 +4,7 @@
 
 - Open the site or install it as an app: on Android use the Chrome menu and "Install app"; on iPhone use Share and "Add to Home Screen". After the first visit it works without internet.
 - The tabs are **Calculator**, **Matrices**, **Graph**, **Tools** and **Notebook**. The `?` button at the top opens this manual.
-- At the top of the calculator there are three buttons: **ℝ/ℂ/ℚ** (number set), **DEG/RAD** (degrees or radians) and the **precision** (8, 12 or 15 digits).
+- At the top of the calculator there are three buttons: **ℝ/ℂ/ℚ/Dec** (number set), **DEG/RAD** (degrees or radians) and the **precision** (8, 12 or 15 digits; in Dec mode it chooses 30, 50, 100, 200 or 500 digits).
 
 ## Calculator
 
@@ -45,12 +45,13 @@
 - The result comes with method, iterations, residual and tolerance on the line below. If it does not converge it says so instead of inventing an answer.
 - The formula must have exactly one parameter.
 
-## Complex numbers and fractions (ℝ, ℂ, ℚ)
+## Complex numbers, fractions and decimals (ℝ, ℂ, ℚ, Dec)
 
 - Tap the button at the top to switch. **ℝ** is the normal mode.
 - **ℂ**: use `i`. Examples: `(1+2i)*(3-i)`, `sqrt(-4)`, `exp(i*pi)`. Functions: `sqrt exp ln abs arg conj re im sin cos tan`. It also shows the modulus and the angle.
 - **ℚ**: exact arithmetic with fractions. `0.1+0.2` gives `3/10`. It shows the decimal value and the mixed number. Functions: `gcd lcm floor ceil round num den abs sqrt` (roots only when exact) and factorial. Integer exponents up to 1000.
-- In ℂ and ℚ there are no variables or named formulas, and `solve` and the graph use ℝ only.
+- **Dec**: decimals with high precision, with 30, 50, 100, 200 or 500 significant digits chosen next to the buttons. Every result is correctly rounded to the chosen number of digits (12 extra digits are used inside the calculation). `1/3` and `sqrt(2)` show all their digits, `pi e phi tau` are exact to that length, and integers such as `2^100` show in full. Functions: `sqrt cbrt exp ln log log2 sin cos tan asin acos atan sinh cosh tanh abs floor ceil round trunc mod pow min max` and factorial (up to 1000). `sin cos tan asin acos atan` follow DEG/RAD, and `sin(180)` in DEG gives exactly `0`. `exp`, `sinh` and `cosh` accept arguments below 100000 in absolute value. `ans` keeps every digit of the last Dec result.
+- In ℂ, ℚ and Dec there are no variables or named formulas to define, and `solve` and the graph use ℝ only.
 
 ## Matrices
 
@@ -107,14 +108,14 @@
 
 - Each notebook is a sheet of **cells**: **calculation** cells (one or more lines, as in the calculator) and **note** cells (free text). Use `+ Cálculo` and `+ Nota`, and the `↑ ↓ ×` buttons on each cell.
 - Cells run from top to bottom and recalculate by themselves as you type. A variable or formula defined in one cell is available to the cells below: `taxa=0.05` and then `1000*(1+taxa)^10`.
-- Each notebook has its own variables, separate from the calculator, and keeps its own number set (ℝ, ℂ or ℚ) and angle mode (DEG or RAD), so reopening it always gives the same results. Lines starting with `#` are comments.
+- Each notebook has its own variables, separate from the calculator, and keeps its own number set (ℝ, ℂ, ℚ or Dec, with its number of digits) and angle mode (DEG or RAD), so reopening it always gives the same results. Lines starting with `#` are comments.
 - If a line fails, it shows the reason and the position, and the other lines keep running.
 - You can have several notebooks (**Novo**, **Renomear**, **Excluir**), saved in the browser. **Exportar .json** creates a file for backup or to send to someone, **Importar** opens such a file, and **Exportar .md** creates a report with the calculations and results.
 
 ## Tips and limits
 
 - Calculations run on your device and nothing you type is sent to a server. History and variables are saved in the browser. Only the title font comes from Google Fonts.
-- Numbers in ℝ are floating point (about 15 digits of precision). For calculations without rounding error use ℚ.
+- Numbers in ℝ are floating point (about 15 digits of precision). For calculations without rounding error use ℚ, and for more digits use Dec.
 - If a new version of the app does not show up, close it and open it again with internet.
 
 # OVERKILL — Manual (Português)
@@ -123,7 +124,7 @@
 
 - Abra o site ou instale como app: no Android use o menu do Chrome e "Instalar app"; no iPhone use Compartilhar e "Adicionar à Tela de Início". Depois da primeira visita ele funciona sem internet.
 - As abas são **Calculadora**, **Matrizes**, **Gráfico**, **Ferramentas** e **Notebook**. O botão `?` no topo abre este manual.
-- No topo da calculadora ficam três botões: **ℝ/ℂ/ℚ** (conjunto numérico), **DEG/RAD** (graus ou radianos) e a **precisão** (8, 12 ou 15 dígitos).
+- No topo da calculadora ficam três botões: **ℝ/ℂ/ℚ/Dec** (conjunto numérico), **DEG/RAD** (graus ou radianos) e a **precisão** (8, 12 ou 15 dígitos; no modo Dec ela escolhe 30, 50, 100, 200 ou 500 dígitos).
 
 ## Calculadora
 
@@ -164,12 +165,13 @@
 - O resultado vem com método, iterações, resíduo e tolerância na linha de baixo. Se não convergir, ele avisa em vez de inventar uma resposta.
 - A fórmula precisa ter um único parâmetro.
 
-## Números complexos e frações (ℝ, ℂ, ℚ)
+## Números complexos, frações e decimais (ℝ, ℂ, ℚ, Dec)
 
 - Toque no botão do topo para alternar. **ℝ** é o modo normal.
 - **ℂ**: use `i`. Exemplos: `(1+2i)*(3-i)`, `sqrt(-4)`, `exp(i*pi)`. Funções: `sqrt exp ln abs arg conj re im sin cos tan`. Mostra também o módulo e o ângulo.
 - **ℚ**: contas exatas com frações. `0.1+0.2` dá `3/10`. Mostra o valor decimal e a forma mista. Funções: `gcd lcm floor ceil round num den abs sqrt` (raiz só quando exata) e fatorial. Expoentes inteiros até 1000.
-- Nos modos ℂ e ℚ não há variáveis nem fórmulas nomeadas, e `solve` e o gráfico usam apenas ℝ.
+- **Dec**: decimais de alta precisão, com 30, 50, 100, 200 ou 500 dígitos significativos escolhidos ao lado dos botões. Todo resultado é arredondado corretamente para a quantidade de dígitos escolhida (12 dígitos extras são usados por dentro da conta). `1/3` e `sqrt(2)` mostram todos os dígitos, `pi e phi tau` são exatos nesse tamanho, e inteiros como `2^100` aparecem por inteiro. Funções: `sqrt cbrt exp ln log log2 sin cos tan asin acos atan sinh cosh tanh abs floor ceil round trunc mod pow min max` e fatorial (até 1000). `sin cos tan asin acos atan` seguem DEG/RAD, e `sin(180)` em DEG dá exatamente `0`. `exp`, `sinh` e `cosh` aceitam argumentos abaixo de 100000 em valor absoluto. `ans` guarda todos os dígitos do último resultado em Dec.
+- Nos modos ℂ, ℚ e Dec não há variáveis nem fórmulas nomeadas para definir, e `solve` e o gráfico usam apenas ℝ.
 
 ## Matrizes
 
@@ -226,12 +228,12 @@
 
 - Cada notebook é uma folha de **células**: de **cálculo** (uma ou mais linhas, como na calculadora) e de **nota** (texto livre). Use `+ Cálculo` e `+ Nota`, e os botões `↑ ↓ ×` de cada célula.
 - As células rodam de cima para baixo e recalculam sozinhas enquanto você digita. Uma variável ou fórmula definida numa célula vale para as de baixo: `taxa=0.05` e depois `1000*(1+taxa)^10`.
-- Cada notebook tem as próprias variáveis, separadas da calculadora, e guarda o seu conjunto numérico (ℝ, ℂ ou ℚ) e o modo de ângulos (DEG ou RAD), então ao reabrir o resultado é sempre o mesmo. Linhas que começam com `#` são comentários.
+- Cada notebook tem as próprias variáveis, separadas da calculadora, e guarda o seu conjunto numérico (ℝ, ℂ, ℚ ou Dec, com a quantidade de dígitos) e o modo de ângulos (DEG ou RAD), então ao reabrir o resultado é sempre o mesmo. Linhas que começam com `#` são comentários.
 - Se uma linha der erro, ela mostra o motivo e a posição, e as outras continuam rodando.
 - Você pode ter vários notebooks (**Novo**, **Renomear**, **Excluir**), salvos no navegador. **Exportar .json** gera um arquivo para backup ou para enviar a alguém, **Importar** abre esse arquivo, e **Exportar .md** gera um relatório com as contas e os resultados.
 
 ## Dicas e limites
 
 - Os cálculos rodam no seu aparelho e nada do que você digita é enviado a servidor. Histórico e variáveis ficam salvos no navegador. Só a fonte do título vem do Google Fonts.
-- Os números em ℝ são de ponto flutuante (cerca de 15 dígitos de precisão). Para contas sem erro de arredondamento use ℚ.
+- Os números em ℝ são de ponto flutuante (cerca de 15 dígitos de precisão). Para contas sem erro de arredondamento use ℚ, e para mais dígitos use Dec.
 - Se uma versão nova do app não aparecer, feche e abra de novo com internet.

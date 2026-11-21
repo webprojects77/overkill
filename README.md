@@ -21,7 +21,7 @@ How to use it: see [MANUAL.md](MANUAL.md), which is also inside the app (the `?`
 - Developer tools: base conversion from 2 to 36, bitwise operations with 8/16/32/64-bit width, IEEE 754 viewer (double and float) and color converter (HEX, RGB, HSL)
 - Statistics: mean, median, mode, quartiles, variance and standard deviation (population and sample), outliers, and linear regression with r, R² and prediction
 - Installable app (PWA): works without internet after the first visit
-- Number sets: real (ℝ), complex (ℂ, with rectangular and polar results) and exact fractions (ℚ, no rounding errors: `0.1+0.2 = 3/10`), switched with one button
+- Number sets: real (ℝ), complex (ℂ, with rectangular and polar results), exact fractions (ℚ, no rounding errors: `0.1+0.2 = 3/10`) and high-precision decimals (Dec, 30 to 500 digits, correctly rounded: `sqrt(2)`, `pi`, `exp`, `ln`, trigonometry), switched with one button
 - Symbolic derivatives (1st to 3rd order) with simplification and a numeric cross-check
 - Built-in manual (`?` button), the same file as `MANUAL.md`
 - Notebook: sheets of calculation and note cells that recompute top to bottom, with their own variables, several saved notebooks, JSON import/export and Markdown reports
@@ -30,7 +30,6 @@ How to use it: see [MANUAL.md](MANUAL.md), which is also inside the app (the `?`
 
 ## Coming in future versions
 
-- Arbitrary-precision decimals
 - Symbolic algebra: more general integrals and factoring beyond rational roots
 - Graphs: implicit curves, 3D surfaces, intersections and extrema, SVG export
 - Geometry
@@ -66,7 +65,7 @@ Como usar: veja o [MANUAL.md](MANUAL.md), que também está dentro do app (botã
 - Ferramentas para programadores: conversão de bases de 2 a 36, operações bit a bit com largura de 8/16/32/64 bits, visualizador IEEE 754 (double e float) e conversor de cores (HEX, RGB, HSL)
 - Estatística: média, mediana, moda, quartis, variância e desvio padrão (populacional e amostral), outliers, e regressão linear com r, R² e previsão
 - App instalável (PWA): funciona sem internet depois da primeira visita
-- Conjuntos numéricos: reais (ℝ), complexos (ℂ, com resultado retangular e polar) e frações exatas (ℚ, sem erro de arredondamento: `0.1+0.2 = 3/10`), alternados por um botão
+- Conjuntos numéricos: reais (ℝ), complexos (ℂ, com resultado retangular e polar), frações exatas (ℚ, sem erro de arredondamento: `0.1+0.2 = 3/10`) e decimais de alta precisão (Dec, de 30 a 500 dígitos, arredondados corretamente: `sqrt(2)`, `pi`, `exp`, `ln`, trigonometria), alternados por um botão
 - Derivadas simbólicas (1ª a 3ª ordem) com simplificação e conferência numérica
 - Manual dentro do app (botão `?`), o mesmo arquivo do `MANUAL.md`
 - Notebook: folhas com células de cálculo e de nota que recalculam de cima para baixo, com variáveis próprias, vários notebooks salvos, importar/exportar JSON e relatórios em Markdown
@@ -75,7 +74,6 @@ Como usar: veja o [MANUAL.md](MANUAL.md), que também está dentro do app (botã
 
 ## O que vem nas próximas versões
 
-- Decimais de precisão arbitrária
 - Álgebra simbólica: integrais mais gerais e fatoração além das raízes racionais
 - Gráficos: curvas implícitas, superfícies 3D, interseções e extremos, exportar SVG
 - Geometria
