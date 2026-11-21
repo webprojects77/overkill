@@ -18,6 +18,7 @@ OVERKILL is a calculator that is growing into a complete math environment: scien
 - Unit converter (length, mass, time, area, volume, speed, energy, pressure, data, temperature) that only converts inside the same category
 - Developer tools: base conversion from 2 to 36, bitwise operations with 8/16/32/64-bit width, IEEE 754 viewer (double and float) and color converter (HEX, RGB, HSL)
 - Statistics: mean, median, mode, quartiles, variance and standard deviation (population and sample), outliers, and linear regression with r, R² and prediction
+- Installable app (PWA): works without internet after the first visit
 - Dark red and black theme
 
 ## Coming in future versions
@@ -29,7 +30,6 @@ OVERKILL is a calculator that is growing into a complete math environment: scien
 - Notebook with executable cells and saved projects
 - Plugins
 - AI assistant that uses the calculator's own engine to compute
-- Installable offline app (PWA)
 
 ## Credits
 
@@ -57,6 +57,7 @@ O OVERKILL é uma calculadora que está virando um ambiente matemático completo
 - Conversor de unidades (comprimento, massa, tempo, área, volume, velocidade, energia, pressão, dados, temperatura) que só converte dentro da mesma categoria
 - Ferramentas para programadores: conversão de bases de 2 a 36, operações bit a bit com largura de 8/16/32/64 bits, visualizador IEEE 754 (double e float) e conversor de cores (HEX, RGB, HSL)
 - Estatística: média, mediana, moda, quartis, variância e desvio padrão (populacional e amostral), outliers, e regressão linear com r, R² e previsão
+- App instalável (PWA): funciona sem internet depois da primeira visita
 - Tema escuro em preto e vermelho
 
 ## O que vem nas próximas versões
@@ -68,7 +69,6 @@ O OVERKILL é uma calculadora que está virando um ambiente matemático completo
 - Notebook com células executáveis e projetos salvos
 - Plugins
 - Assistente de IA que usa o próprio motor da calculadora para calcular
-- App instalável offline (PWA)
 
 ## Créditos
 
