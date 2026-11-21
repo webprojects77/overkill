@@ -24,6 +24,7 @@ How to use it: see [MANUAL.md](MANUAL.md), which is also inside the app (the `?`
 - Number sets: real (ℝ), complex (ℂ, with rectangular and polar results) and exact fractions (ℚ, no rounding errors: `0.1+0.2 = 3/10`), switched with one button
 - Symbolic derivatives (1st to 3rd order) with simplification and a numeric cross-check
 - Built-in manual (`?` button), the same file as `MANUAL.md`
+- Notebook: sheets of calculation and note cells that recompute top to bottom, with their own variables, several saved notebooks, JSON import/export and Markdown reports
 - Dark red and black theme
 
 ## Coming in future versions
@@ -32,7 +33,6 @@ How to use it: see [MANUAL.md](MANUAL.md), which is also inside the app (the `?`
 - Symbolic algebra: expand, factor and integrals
 - Graphs: implicit curves, 3D surfaces, intersections and extrema, SVG export
 - Geometry
-- Notebook with executable cells and saved projects
 - Plugins
 - AI assistant that uses the calculator's own engine to compute
 
@@ -68,6 +68,7 @@ Como usar: veja o [MANUAL.md](MANUAL.md), que também está dentro do app (botã
 - Conjuntos numéricos: reais (ℝ), complexos (ℂ, com resultado retangular e polar) e frações exatas (ℚ, sem erro de arredondamento: `0.1+0.2 = 3/10`), alternados por um botão
 - Derivadas simbólicas (1ª a 3ª ordem) com simplificação e conferência numérica
 - Manual dentro do app (botão `?`), o mesmo arquivo do `MANUAL.md`
+- Notebook: folhas com células de cálculo e de nota que recalculam de cima para baixo, com variáveis próprias, vários notebooks salvos, importar/exportar JSON e relatórios em Markdown
 - Tema escuro em preto e vermelho
 
 ## O que vem nas próximas versões
@@ -76,7 +77,6 @@ Como usar: veja o [MANUAL.md](MANUAL.md), que também está dentro do app (botã
 - Álgebra simbólica: expandir, fatorar e integrais
 - Gráficos: curvas implícitas, superfícies 3D, interseções e extremos, exportar SVG
 - Geometria
-- Notebook com células executáveis e projetos salvos
 - Plugins
 - Assistente de IA que usa o próprio motor da calculadora para calcular
 

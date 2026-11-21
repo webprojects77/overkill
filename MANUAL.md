@@ -3,7 +3,7 @@
 ## Getting started
 
 - Open the site or install it as an app: on Android use the Chrome menu and "Install app"; on iPhone use Share and "Add to Home Screen". After the first visit it works without internet.
-- The tabs are **Calculator**, **Matrices**, **Graph** and **Tools**. The `?` button at the top opens this manual.
+- The tabs are **Calculator**, **Matrices**, **Graph**, **Tools** and **Notebook**. The `?` button at the top opens this manual.
 - At the top of the calculator there are three buttons: **ℝ/ℂ/ℚ** (number set), **DEG/RAD** (degrees or radians) and the **precision** (8, 12 or 15 digits).
 
 ## Calculator
@@ -97,6 +97,14 @@
 - The result is simplified. If you give a point, it computes the value and checks it against a numeric derivative.
 - Supports `sin cos tan asin acos atan sinh cosh tanh exp ln log log2 sqrt cbrt abs` and powers. Angles are in radians. Other letters are treated as constants.
 
+## Notebook
+
+- Each notebook is a sheet of **cells**: **calculation** cells (one or more lines, as in the calculator) and **note** cells (free text). Use `+ Cálculo` and `+ Nota`, and the `↑ ↓ ×` buttons on each cell.
+- Cells run from top to bottom and recalculate by themselves as you type. A variable or formula defined in one cell is available to the cells below: `taxa=0.05` and then `1000*(1+taxa)^10`.
+- Each notebook has its own variables, separate from the calculator, and keeps its own number set (ℝ, ℂ or ℚ) and angle mode (DEG or RAD), so reopening it always gives the same results. Lines starting with `#` are comments.
+- If a line fails, it shows the reason and the position, and the other lines keep running.
+- You can have several notebooks (**Novo**, **Renomear**, **Excluir**), saved in the browser. **Exportar .json** creates a file for backup or to send to someone, **Importar** opens such a file, and **Exportar .md** creates a report with the calculations and results.
+
 ## Tips and limits
 
 - Calculations run on your device and nothing you type is sent to a server. History and variables are saved in the browser. Only the title font comes from Google Fonts.
@@ -108,7 +116,7 @@
 ## Primeiros passos
 
 - Abra o site ou instale como app: no Android use o menu do Chrome e "Instalar app"; no iPhone use Compartilhar e "Adicionar à Tela de Início". Depois da primeira visita ele funciona sem internet.
-- As abas são **Calculadora**, **Matrizes**, **Gráfico** e **Ferramentas**. O botão `?` no topo abre este manual.
+- As abas são **Calculadora**, **Matrizes**, **Gráfico**, **Ferramentas** e **Notebook**. O botão `?` no topo abre este manual.
 - No topo da calculadora ficam três botões: **ℝ/ℂ/ℚ** (conjunto numérico), **DEG/RAD** (graus ou radianos) e a **precisão** (8, 12 ou 15 dígitos).
 
 ## Calculadora
@@ -201,6 +209,14 @@
 - Digite a expressão, a variável e a ordem (1ª a 3ª). Exemplo: `x^2*sin(x)`.
 - O resultado vem simplificado. Se você informar um ponto, ele calcula o valor e confere com uma derivada numérica.
 - Suporta `sin cos tan asin acos atan sinh cosh tanh exp ln log log2 sqrt cbrt abs` e potências. Os ângulos são em radianos. Outras letras são tratadas como constantes.
+
+## Notebook
+
+- Cada notebook é uma folha de **células**: de **cálculo** (uma ou mais linhas, como na calculadora) e de **nota** (texto livre). Use `+ Cálculo` e `+ Nota`, e os botões `↑ ↓ ×` de cada célula.
+- As células rodam de cima para baixo e recalculam sozinhas enquanto você digita. Uma variável ou fórmula definida numa célula vale para as de baixo: `taxa=0.05` e depois `1000*(1+taxa)^10`.
+- Cada notebook tem as próprias variáveis, separadas da calculadora, e guarda o seu conjunto numérico (ℝ, ℂ ou ℚ) e o modo de ângulos (DEG ou RAD), então ao reabrir o resultado é sempre o mesmo. Linhas que começam com `#` são comentários.
+- Se uma linha der erro, ela mostra o motivo e a posição, e as outras continuam rodando.
+- Você pode ter vários notebooks (**Novo**, **Renomear**, **Excluir**), salvos no navegador. **Exportar .json** gera um arquivo para backup ou para enviar a alguém, **Importar** abre esse arquivo, e **Exportar .md** gera um relatório com as contas e os resultados.
 
 ## Dicas e limites
 

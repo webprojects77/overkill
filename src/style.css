@@ -55,3 +55,13 @@ textarea{width:100%;background:rgba(0,0,0,.6);color:#fff;border:1px solid var(--
 .manual p,.manual li{font-size:15px;line-height:1.5;margin:6px 0}
 .manual ul{padding-left:20px;margin:6px 0}
 .manual code{background:rgba(255,40,40,.2);border-radius:4px;padding:1px 5px;font:13px ui-monospace,Menlo,Consolas,monospace;overflow-wrap:anywhere}
+.tabs{overflow-x:auto;scrollbar-width:none}
+.tabs button{flex:1 0 auto;padding:8px 12px}
+.cell{background:rgba(0,0,0,.5);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:10px}
+.cellH{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;margin-bottom:6px}
+.cellH button{background:rgba(255,255,255,.1);color:#fff;border:0;border-radius:6px;min-width:30px;padding:4px 8px;font-size:14px;cursor:pointer}
+.cellH button:first-of-type{margin-left:auto}
+.nbOut{margin-top:8px;font:14px ui-monospace,Menlo,Consolas,monospace;overflow-wrap:anywhere}
+.nbOk .nbE{color:var(--muted)}
+.nbErr{color:var(--err)}
+.nbI{color:var(--muted);font-size:12px;margin-left:10px}

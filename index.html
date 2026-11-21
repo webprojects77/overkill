@@ -33,6 +33,7 @@
 <button type="button" data-tab="mat" aria-pressed="false">Matrizes</button>
 <button type="button" data-tab="gr" aria-pressed="false">Gráfico</button>
 <button type="button" data-tab="tl" aria-pressed="false">Ferramentas</button>
+<button type="button" data-tab="nb" aria-pressed="false">Notebook</button>
 </nav>
 <div id="calcview">
 <section class="screen" aria-live="polite">
@@ -148,6 +149,21 @@ x^2/4-1</textarea>
 </div>
 </div>
 </section>
+<section id="nb" hidden>
+<div class="screen">
+<div class="row"><select id="nbSel" aria-label="Notebook"></select><button id="nbNew" type="button">Novo</button></div>
+<div class="row"><button id="nbRen" type="button">Renomear</button><button id="nbDel" type="button">Excluir</button>
+<select id="nbNum" aria-label="Conjunto numérico do notebook"><option value="R">ℝ</option><option value="C">ℂ</option><option value="Q">ℚ</option></select>
+<select id="nbMode" aria-label="Ângulos do notebook"><option value="DEG">DEG</option><option value="RAD">RAD</option></select></div>
+<p class="hint">As células rodam de cima para baixo, com variáveis só deste notebook. Linhas com # são comentários.</p>
+</div>
+<div id="nbCells"></div>
+<div class="screen">
+<div class="row"><button id="nbAddC" type="button">+ Cálculo</button><button id="nbAddN" type="button">+ Nota</button></div>
+<div class="row"><button id="nbExp" type="button">Exportar .json</button><button id="nbMd" type="button">Exportar .md</button><button id="nbImp" type="button">Importar</button><input id="nbFile" type="file" accept=".json,application/json" hidden></div>
+<div id="nbMsg" class="hint" aria-live="polite"></div>
+</div>
+</section>
 <section id="help" hidden>
 <div class="screen">
 <div class="row"><select id="hlpLang" aria-label="Idioma do manual"><option value="pt">Português</option><option value="en">English</option></select></div>
@@ -162,6 +178,7 @@ x^2/4-1</textarea>
 <script src="src/tools.js"></script>
 <script src="src/stats.js"></script>
 <script src="src/symbolic.js"></script>
+<script src="src/notebook.js"></script>
 <script src="src/help.js"></script>
 <script src="src/pwa.js"></script>
 </body>
