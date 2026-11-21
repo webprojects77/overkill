@@ -86,6 +86,12 @@
 
 - Accepts `#rrggbb`, `#rgb`, `rgb(r, g, b)` and `hsl(h, s%, l%)` and converts between HEX, RGB and HSL.
 
+### Algebra: expand, factor, integrate
+
+- **Expand** multiplies out polynomials exactly, with fractions, in one or several variables: `(a+b)^3`. **Factor** works on polynomials in one variable and finds the rational roots: `x^3-6x^2+11x-6` gives `(x - 1)(x - 2)(x - 3)`.
+- **Integrate** handles polynomials, sums, constants times functions, `sin cos exp sinh cosh tan` with a linear argument such as `cos(2x)`, powers and roots of linear expressions, `1/(ax+b)`, and polynomial times `sin`, `cos` or `exp` (by parts), for example `x*exp(2x)`. Fill both limits for a definite integral.
+- Every result is checked before it is shown: factors are multiplied back exactly, and an integral is differentiated and compared with the original function. If the check fails, nothing is shown. When no rule applies you get a clear message, which does not mean the integral does not exist.
+
 ### Statistics
 
 - **Descriptive**: type numbers separated by spaces, commas or lines. It shows mean, median, mode, quartiles, variance and standard deviation (population and sample), standard error and outliers.
@@ -198,6 +204,12 @@
 ### Cores
 
 - Aceita `#rrggbb`, `#rgb`, `rgb(r, g, b)` e `hsl(h, s%, l%)` e converte entre HEX, RGB e HSL.
+
+### Álgebra: expandir, fatorar, integrar
+
+- **Expandir** multiplica polinômios de forma exata, com frações, em uma ou várias variáveis: `(a+b)^3`. **Fatorar** funciona com polinômios de uma variável e encontra as raízes racionais: `x^3-6x^2+11x-6` dá `(x - 1)(x - 2)(x - 3)`.
+- **Integrar** trata polinômios, somas, constantes vezes funções, `sin cos exp sinh cosh tan` com argumento linear como `cos(2x)`, potências e raízes de expressões lineares, `1/(ax+b)` e polinômio vezes `sin`, `cos` ou `exp` (por partes), por exemplo `x*exp(2x)`. Preencha os dois limites para uma integral definida.
+- Todo resultado é conferido antes de aparecer: os fatores são multiplicados de volta de forma exata, e a integral é derivada e comparada com a função original. Se a conferência falhar, nada é mostrado. Quando nenhuma regra serve, aparece uma mensagem clara, que não significa que a integral não exista.
 
 ### Estatística
 

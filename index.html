@@ -113,6 +113,7 @@ x^2/4-1</textarea>
 <option value="cl">Cores</option>
 <option value="st">Estatística</option>
 <option value="sy">Derivadas (simbólico)</option>
+<option value="al">Álgebra: expandir, fatorar, integrar</option>
 </select>
 <div data-tool="un">
 <div class="row"><select id="unCat" aria-label="Categoria"></select></div>
@@ -147,6 +148,12 @@ x^2/4-1</textarea>
 <div class="row"><select id="syOrd" aria-label="Ordem da derivada"><option value="1">1ª derivada</option><option value="2">2ª derivada</option><option value="3">3ª derivada</option></select><input id="syAt" placeholder="valor da variável (opcional)" aria-label="Ponto de avaliação"></div>
 <pre class="out" id="syOut"></pre>
 </div>
+<div data-tool="al" hidden>
+<div class="row"><select id="alOp" aria-label="Operação"><option value="expand">Expandir</option><option value="factor">Fatorar</option><option value="integ">Integrar</option></select><input id="alVar" value="x" aria-label="Variável" style="max-width:72px"></div>
+<div class="row"><input id="alIn" value="(x+1)^3-(x-1)^2" aria-label="Expressão" spellcheck="false"></div>
+<div class="row"><input id="alA" placeholder="limite inferior (integral definida)" aria-label="Limite inferior"><input id="alB" placeholder="limite superior" aria-label="Limite superior"></div>
+<pre class="out" id="alOut"></pre>
+</div>
 </div>
 </section>
 <section id="nb" hidden>
@@ -178,6 +185,7 @@ x^2/4-1</textarea>
 <script src="src/tools.js"></script>
 <script src="src/stats.js"></script>
 <script src="src/symbolic.js"></script>
+<script src="src/polynomial.js"></script>
 <script src="src/notebook.js"></script>
 <script src="src/help.js"></script>
 <script src="src/pwa.js"></script>

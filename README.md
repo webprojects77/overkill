@@ -25,16 +25,17 @@ How to use it: see [MANUAL.md](MANUAL.md), which is also inside the app (the `?`
 - Symbolic derivatives (1st to 3rd order) with simplification and a numeric cross-check
 - Built-in manual (`?` button), the same file as `MANUAL.md`
 - Notebook: sheets of calculation and note cells that recompute top to bottom, with their own variables, several saved notebooks, JSON import/export and Markdown reports
+- Symbolic algebra: exact polynomial expansion, factoring over the rationals, and integrals (indefinite and definite) with automatic verification of every result
 - Dark red and black theme
 
 ## Coming in future versions
 
 - Arbitrary-precision decimals
-- Symbolic algebra: expand, factor and integrals
+- Symbolic algebra: more general integrals and factoring beyond rational roots
 - Graphs: implicit curves, 3D surfaces, intersections and extrema, SVG export
 - Geometry
 - Plugins
-- AI assistant that uses the calculator's own engine to compute
+- Oracle: optional AI assistant (bring your own key) that turns problems into structured commands, runs them on the calculator's own engine and never reports a result the engine did not confirm
 
 ## Credits
 
@@ -69,16 +70,17 @@ Como usar: veja o [MANUAL.md](MANUAL.md), que também está dentro do app (botã
 - Derivadas simbólicas (1ª a 3ª ordem) com simplificação e conferência numérica
 - Manual dentro do app (botão `?`), o mesmo arquivo do `MANUAL.md`
 - Notebook: folhas com células de cálculo e de nota que recalculam de cima para baixo, com variáveis próprias, vários notebooks salvos, importar/exportar JSON e relatórios em Markdown
+- Álgebra simbólica: expansão exata de polinômios, fatoração sobre os racionais e integrais (indefinidas e definidas) com verificação automática de cada resultado
 - Tema escuro em preto e vermelho
 
 ## O que vem nas próximas versões
 
 - Decimais de precisão arbitrária
-- Álgebra simbólica: expandir, fatorar e integrais
+- Álgebra simbólica: integrais mais gerais e fatoração além das raízes racionais
 - Gráficos: curvas implícitas, superfícies 3D, interseções e extremos, exportar SVG
 - Geometria
 - Plugins
-- Assistente de IA que usa o próprio motor da calculadora para calcular
+- Oracle: assistente de IA opcional (com a sua própria chave) que transforma problemas em comandos estruturados, executa tudo no motor da calculadora e nunca mostra um resultado que o motor não confirmou
 
 ## Créditos
 
