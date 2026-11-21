@@ -25,6 +25,7 @@
 <option value="12">12 dígitos</option>
 <option value="15">15 dígitos</option>
 </select>
+<button id="helpBtn" type="button" data-tab="help" aria-pressed="false" aria-label="Manual de instruções">?</button>
 </div>
 </header>
 <nav class="tabs" aria-label="Módulos">
@@ -110,6 +111,7 @@ x^2/4-1</textarea>
 <option value="fp">Ponto flutuante IEEE 754</option>
 <option value="cl">Cores</option>
 <option value="st">Estatística</option>
+<option value="sy">Derivadas (simbólico)</option>
 </select>
 <div data-tool="un">
 <div class="row"><select id="unCat" aria-label="Categoria"></select></div>
@@ -139,6 +141,17 @@ x^2/4-1</textarea>
 <div class="row"><input id="stX" placeholder="prever y para x = (opcional)" aria-label="Valor de x para previsão"></div>
 <pre class="out" id="stOut"></pre>
 </div>
+<div data-tool="sy" hidden>
+<div class="row"><input id="syIn" value="x^2*sin(x)" aria-label="Expressão" spellcheck="false"><input id="syVar" value="x" aria-label="Variável" style="max-width:72px"></div>
+<div class="row"><select id="syOrd" aria-label="Ordem da derivada"><option value="1">1ª derivada</option><option value="2">2ª derivada</option><option value="3">3ª derivada</option></select><input id="syAt" placeholder="valor da variável (opcional)" aria-label="Ponto de avaliação"></div>
+<pre class="out" id="syOut"></pre>
+</div>
+</div>
+</section>
+<section id="help" hidden>
+<div class="screen">
+<div class="row"><select id="hlpLang" aria-label="Idioma do manual"><option value="pt">Português</option><option value="en">English</option></select></div>
+<div id="hlpBody" class="manual">Carregando o manual…</div>
 </div>
 </section>
 </main>
@@ -148,6 +161,8 @@ x^2/4-1</textarea>
 <script src="src/graph.js"></script>
 <script src="src/tools.js"></script>
 <script src="src/stats.js"></script>
+<script src="src/symbolic.js"></script>
+<script src="src/help.js"></script>
 <script src="src/pwa.js"></script>
 </body>
 </html>

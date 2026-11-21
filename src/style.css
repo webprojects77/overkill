@@ -47,3 +47,11 @@ textarea{width:100%;background:rgba(0,0,0,.6);color:#fff;border:1px solid var(--
 .wide{width:100%;background:rgba(0,0,0,.6);color:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;font:inherit}
 #sw{height:36px;border-radius:8px;border:1px solid var(--line);margin-top:10px;background:#ff2a2a}
 .tabs button{font-size:13px;padding:8px 2px}
+.opts button[aria-pressed="true"]{background:linear-gradient(180deg,#a00000,#ff2a2a);border-color:#fff}
+.manual{margin-top:12px}
+.manual h2{font-size:20px;margin:0 0 8px}
+.manual h3{font-size:17px;margin:18px 0 6px;color:#ff9a9a;border-bottom:1px solid var(--line);padding-bottom:4px}
+.manual h4{font-size:15px;margin:12px 0 4px}
+.manual p,.manual li{font-size:15px;line-height:1.5;margin:6px 0}
+.manual ul{padding-left:20px;margin:6px 0}
+.manual code{background:rgba(255,40,40,.2);border-radius:4px;padding:1px 5px;font:13px ui-monospace,Menlo,Consolas,monospace;overflow-wrap:anywhere}
