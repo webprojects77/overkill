@@ -17,6 +17,7 @@ OVERKILL is a calculator that is growing into a complete math environment: scien
 - Graph Studio: `y = f(x)`, polar and parametric curves, up to 4 at once, zoom, pan, point tracer, roots in the visible window, PNG export
 - Unit converter (length, mass, time, area, volume, speed, energy, pressure, data, temperature) that only converts inside the same category
 - Developer tools: base conversion from 2 to 36, bitwise operations with 8/16/32/64-bit width, IEEE 754 viewer (double and float) and color converter (HEX, RGB, HSL)
+- Statistics: mean, median, mode, quartiles, variance and standard deviation (population and sample), outliers, and linear regression with r, R² and prediction
 - Dark red and black theme
 
 ## Coming in future versions
@@ -24,7 +25,7 @@ OVERKILL is a calculator that is growing into a complete math environment: scien
 - Exact fractions, decimals and complex numbers
 - Symbolic algebra (simplify, expand, factor, derivatives, integrals)
 - Graphs: implicit curves, 3D surfaces, intersections and extrema, SVG export
-- Geometry and statistics
+- Geometry
 - Notebook with executable cells and saved projects
 - Plugins
 - AI assistant that uses the calculator's own engine to compute
@@ -55,6 +56,7 @@ O OVERKILL é uma calculadora que está virando um ambiente matemático completo
 - Graph Studio: curvas `y = f(x)`, polares e paramétricas, até 4 ao mesmo tempo, zoom, arrastar, rastreador de ponto, raízes na janela visível, exportar PNG
 - Conversor de unidades (comprimento, massa, tempo, área, volume, velocidade, energia, pressão, dados, temperatura) que só converte dentro da mesma categoria
 - Ferramentas para programadores: conversão de bases de 2 a 36, operações bit a bit com largura de 8/16/32/64 bits, visualizador IEEE 754 (double e float) e conversor de cores (HEX, RGB, HSL)
+- Estatística: média, mediana, moda, quartis, variância e desvio padrão (populacional e amostral), outliers, e regressão linear com r, R² e previsão
 - Tema escuro em preto e vermelho
 
 ## O que vem nas próximas versões
@@ -62,7 +64,7 @@ O OVERKILL é uma calculadora que está virando um ambiente matemático completo
 - Frações exatas, decimais e números complexos
 - Álgebra simbólica (simplificar, expandir, fatorar, derivadas, integrais)
 - Gráficos: curvas implícitas, superfícies 3D, interseções e extremos, exportar SVG
-- Geometria e estatística
+- Geometria
 - Notebook com células executáveis e projetos salvos
 - Plugins
 - Assistente de IA que usa o próprio motor da calculadora para calcular

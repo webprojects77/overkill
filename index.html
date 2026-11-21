@@ -104,6 +104,7 @@ x^2/4-1</textarea>
 <option value="bs">Bases e operações com bits</option>
 <option value="fp">Ponto flutuante IEEE 754</option>
 <option value="cl">Cores</option>
+<option value="st">Estatística</option>
 </select>
 <div data-tool="un">
 <div class="row"><select id="unCat" aria-label="Categoria"></select></div>
@@ -126,6 +127,13 @@ x^2/4-1</textarea>
 <div id="sw"></div>
 <pre class="out" id="clOut"></pre>
 </div>
+<div data-tool="st" hidden>
+<div class="row"><select id="stMode" aria-label="Tipo de análise"><option value="desc">Estatística descritiva</option><option value="reg">Regressão linear (x y)</option></select></div>
+<label for="stIn">Dados separados por espaço, vírgula ou linha</label>
+<textarea id="stIn" rows="5" spellcheck="false">2 4 4 4 5 5 7 9</textarea>
+<div class="row"><input id="stX" placeholder="prever y para x = (opcional)" aria-label="Valor de x para previsão"></div>
+<pre class="out" id="stOut"></pre>
+</div>
 </div>
 </section>
 </main>
@@ -133,5 +141,6 @@ x^2/4-1</textarea>
 <script src="src/matrix.js"></script>
 <script src="src/graph.js"></script>
 <script src="src/tools.js"></script>
+<script src="src/stats.js"></script>
 </body>
 </html>
