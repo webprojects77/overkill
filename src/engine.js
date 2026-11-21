@@ -1,8 +1,9 @@
 const $=s=>document.querySelector(s);
 const KEY="overkill:v1";
-const st={mode:"DEG",prec:12,hist:[],ans:0,vars:Object.create(null),fns:Object.create(null),info:""};
+const st={mode:"DEG",prec:12,hist:[],ans:0,num:"R",vars:Object.create(null),fns:Object.create(null),info:""};
 function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||"{}");if(d.mode==="DEG"||d.mode==="RAD")st.mode=d.mode;if([8,12,15].includes(d.prec))st.prec=d.prec;if(Array.isArray(d.hist))st.hist=d.hist.slice(0,100);if(typeof d.ans==="number")st.ans=d.ans;loadExtra(d)}catch(e){}}
 function loadExtra(d){
+  if(["R","C","Q"].includes(d.num))st.num=d.num;
   const ok=n=>/^[A-Za-z_]\w*$/.test(n);
   if(d.vars&&typeof d.vars==="object")for(const k of Object.keys(d.vars))if(ok(k)&&Number.isFinite(d.vars[k]))st.vars[k]=d.vars[k];
   if(d.fns&&typeof d.fns==="object")for(const k of Object.keys(d.fns)){const f=d.fns[k];if(ok(k)&&f&&Array.isArray(f.p)&&f.p.length&&f.p.every(x=>typeof x==="string"&&ok(x))&&typeof f.b==="string")st.fns[k]={p:f.p,b:f.b}}
@@ -174,6 +175,7 @@ function solveRoot(name,a,b,depth){
 const reserved=n=>Object.hasOwn(FN,n)||Object.hasOwn(CONST,n)||n==="ans"||n==="solve";
 function execute(src){
   st.info="";
+  if(st.num!=="R")return evalAny(src);
   const at=(body,off)=>{try{return evaluate(body)}catch(e){if(e instanceof CalcError&&e.pos!==undefined)e.pos+=off;throw e}};
   let m=src.match(/^\s*([A-Za-z_]\w*)\s*\(\s*([A-Za-z_]\w*(?:\s*,\s*[A-Za-z_]\w*)*)\s*\)\s*=(?!=)\s*(.+)$/);
   if(m){
@@ -195,8 +197,7 @@ function execute(src){
     st.vars[nm]=v;
     return {r:nm+" = "+fmt(v),v};
   }
-  const v=evaluate(src);
-  return {r:fmt(v),v};
+  return evalAny(src);
 }
 function renderVars(){
   const ul=$("#vars");ul.textContent="";
@@ -228,7 +229,7 @@ function live(){
   err.textContent="";
   const s=ex.value;
   if(!s.trim()){res.textContent=lastText;return}
-  try{st.info="";const v=evaluate(s);res.textContent="= "+fmt(v);res.dataset.v=res.textContent.slice(2);$("#info").textContent=st.info}catch(e){res.textContent="";$("#info").textContent=""}
+  try{st.info="";const o=evalAny(s);res.textContent="= "+o.r;res.dataset.v=o.r;$("#info").textContent=st.info}catch(e){res.textContent="";$("#info").textContent=""}
 }
 function commit(){
   let s=ex.value;
@@ -273,6 +274,7 @@ const KEYS=[
 ["1","1"],["2","2"],["3","3"],["−","-","op"],
 ["0","0"],[".","."],["π","pi","op"],["+","+","op"],
 ["ans","ans","op"],["%","%","op"],["e","e","op"],[",",",","op"],
+["i","i","op"],["gcd","gcd(","op"],["abs","abs(","op"],["conj","conj(","op"],
 ["=","eq","eq"]
 ];
 const pad=$("#pad");
@@ -297,9 +299,11 @@ async function copy(){
 res.onclick=copy;
 res.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();copy()}};
 $("#mode").onclick=()=>{st.mode=st.mode==="DEG"?"RAD":"DEG";$("#mode").textContent=st.mode;save();live()};
+$("#numMode").onclick=()=>{st.num={R:"C",C:"Q",Q:"R"}[st.num];$("#numMode").textContent={R:"ℝ",C:"ℂ",Q:"ℚ"}[st.num];save();live()};
 $("#prec").onchange=e=>{st.prec=parseInt(e.target.value,10);save();live()};
 $("#clr").onclick=()=>{if(st.hist.length&&confirm("Apagar todo o histórico?")){st.hist=[];save();renderHist()}};
 
 load();
+$("#numMode").textContent={R:"ℝ",C:"ℂ",Q:"ℚ"}[st.num];
 $("#mode").textContent=st.mode;$("#prec").value=String(st.prec);renderHist();renderVars();
 if(matchMedia("(pointer:fine)").matches)ex.focus();else ex.setAttribute("inputmode","none");

@@ -19,11 +19,12 @@ OVERKILL is a calculator that is growing into a complete math environment: scien
 - Developer tools: base conversion from 2 to 36, bitwise operations with 8/16/32/64-bit width, IEEE 754 viewer (double and float) and color converter (HEX, RGB, HSL)
 - Statistics: mean, median, mode, quartiles, variance and standard deviation (population and sample), outliers, and linear regression with r, R² and prediction
 - Installable app (PWA): works without internet after the first visit
+- Number sets: real (ℝ), complex (ℂ, with rectangular and polar results) and exact fractions (ℚ, no rounding errors: `0.1+0.2 = 3/10`), switched with one button
 - Dark red and black theme
 
 ## Coming in future versions
 
-- Exact fractions, decimals and complex numbers
+- Arbitrary-precision decimals
 - Symbolic algebra (simplify, expand, factor, derivatives, integrals)
 - Graphs: implicit curves, 3D surfaces, intersections and extrema, SVG export
 - Geometry
@@ -58,11 +59,12 @@ O OVERKILL é uma calculadora que está virando um ambiente matemático completo
 - Ferramentas para programadores: conversão de bases de 2 a 36, operações bit a bit com largura de 8/16/32/64 bits, visualizador IEEE 754 (double e float) e conversor de cores (HEX, RGB, HSL)
 - Estatística: média, mediana, moda, quartis, variância e desvio padrão (populacional e amostral), outliers, e regressão linear com r, R² e previsão
 - App instalável (PWA): funciona sem internet depois da primeira visita
+- Conjuntos numéricos: reais (ℝ), complexos (ℂ, com resultado retangular e polar) e frações exatas (ℚ, sem erro de arredondamento: `0.1+0.2 = 3/10`), alternados por um botão
 - Tema escuro em preto e vermelho
 
 ## O que vem nas próximas versões
 
-- Frações exatas, decimais e números complexos
+- Decimais de precisão arbitrária
 - Álgebra simbólica (simplificar, expandir, fatorar, derivadas, integrais)
 - Gráficos: curvas implícitas, superfícies 3D, interseções e extremos, exportar SVG
 - Geometria
