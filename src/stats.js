@@ -52,7 +52,7 @@ function statsUI(){
       });
       const xv=$("#stX").value.trim();
       out.textContent=TL.regress(pts,xv?evaluate(xv):null);
-    }catch(e){out.textContent=e instanceof CalcError?"Erro de "+e.kind+": "+e.message:"Erro inesperado"}
+    }catch(e){out.textContent=errText(e)}
   };
   $("#stMode").onchange=()=>{$("#stIn").value=$("#stMode").value==="desc"?"2 4 4 4 5 5 7 9":"1 1\n2 2\n3 2\n4 3\n5 5";run()};
   $("#stIn").oninput=run;$("#stX").oninput=run;

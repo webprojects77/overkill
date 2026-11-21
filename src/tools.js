@@ -79,7 +79,7 @@ const TL={
 function toolsUI(){
   const sel=$("#tlSel");
   const fill=(el,list,v)=>{el.textContent="";list.forEach(k=>{const o=document.createElement("option");o.value=k;o.textContent=k;el.append(o)});if(v!==undefined)el.value=v};
-  const guard=(out,fn)=>()=>{try{out.textContent=fn()}catch(e){out.textContent=e instanceof CalcError?"Erro de "+e.kind+": "+e.message:"Erro inesperado"}};
+  const guard=(out,fn)=>()=>{try{out.textContent=fn()}catch(e){out.textContent=errText(e)}};
   const runUn=guard($("#unOut"),()=>{
     const cat=$("#unCat").value,v=evaluate($("#unVal").value),f=$("#unFrom").value,t=$("#unTo").value;
     const all=Object.keys(TL.units[cat]).map(u=>fmt(TL.convert(cat,v,f,u))+" "+u).join("\n");

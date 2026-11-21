@@ -63,7 +63,7 @@ function matUI(){
       else if(op==="inv"){const r=LA.inv(A);t=LA.show(r.X)+"\n\ncondicionamento (norma 1) ≈ "+r.cond.toExponential(2)+(r.cond>1e10?"\naviso: matriz mal condicionada, o resultado pode ser impreciso":"")}
       else{const r=LA.solve(A,B);t="x =\n"+LA.show(r.X)+"\n\nmétodo: eliminação de Gauss-Jordan com pivotamento parcial\nresíduo máx |Ax−b| ≈ "+r.res.toExponential(2)}
       out.textContent=t;
-    }catch(e){out.textContent=e instanceof CalcError?"Erro de "+e.kind+": "+e.message:"Erro inesperado"}
+    }catch(e){out.textContent=errText(e)}
   };
   $("#matGo").onclick=run;
   document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{

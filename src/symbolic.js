@@ -153,7 +153,7 @@ function symbolicUI(){
         lines.push("  derivada numérica (conferência) = "+fmt(nd));
       }
       out.textContent=lines.join("\n");
-    }catch(e){out.textContent=e instanceof CalcError?"Erro de "+e.kind+": "+e.message:"Erro inesperado"}
+    }catch(e){out.textContent=errText(e)}
     finally{st.mode=old}
   };
   ["#syIn","#syVar","#syAt"].forEach(s=>{$(s).oninput=run});

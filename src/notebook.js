@@ -29,6 +29,7 @@ const NB={
     if(text.length>2e6)throw new Error("Arquivo grande demais");
     let d;try{d=JSON.parse(text)}catch(e){throw new Error("O arquivo não é um JSON válido")}
     if(!d||d.format!=="overkill-notebook"||!d.project)throw new Error("O arquivo não é um notebook do OVERKILL");
+    if(typeof d.version==="number"&&d.version>1)throw new Error("O arquivo é de uma versão mais nova que a suportada");
     const p=NB.proj(d.project);
     if(!p)throw new Error("Notebook inválido");
     return p;
@@ -39,7 +40,7 @@ const NB={
       const t=line.trim();
       if(!t||t.startsWith("#"))return null;
       try{const o=execute(t);if(o.v!==undefined)st.ans=o.v;return {e:t,r:o.r,i:st.info}}
-      catch(e){return {e:t,err:e instanceof CalcError?"erro de "+e.kind+" (posição "+((e.pos||0)+1)+"): "+e.message:"erro inesperado"}}
+      catch(e){return {e:t,err:e instanceof CalcError?"erro de "+e.kind+" (posição "+((e.pos||0)+1)+"): "+e.message:errText(e)}}
     }).filter(Boolean);
   },
   run(p){
@@ -63,7 +64,7 @@ function notebookUI(){
   let S,outs=[],tm=0;
   try{S=NB.all(JSON.parse(localStorage.getItem(NB.STORE)||"null"))}catch(e){S=NB.all(null)}
   const P=()=>S.projects[S.cur];
-  const persist=()=>{try{localStorage.setItem(NB.STORE,JSON.stringify(S))}catch(e){}};
+  const persist=()=>{try{localStorage.setItem(NB.STORE,JSON.stringify(S))}catch(e){msg("Não foi possível salvar: armazenamento cheio ou bloqueado")}};
   const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e};
   const msg=t=>{$("#nbMsg").textContent=t};
   const uid=()=>"p"+Date.now().toString(36)+Math.floor(Math.random()*1296).toString(36);
@@ -108,7 +109,7 @@ function notebookUI(){
     runAll();
   }
   $("#nbSel").onchange=()=>{S.cur=$("#nbSel").value;persist();fillSel();render();msg("")};
-  $("#nbNew").onclick=()=>{const id=uid();S.projects[id]=NB.blank("Notebook "+(Object.keys(S.projects).length+1));S.cur=id;persist();fillSel();render();msg("")};
+  $("#nbNew").onclick=()=>{if(Object.keys(S.projects).length>=50){msg("Limite de 50 notebooks");return}const id=uid();S.projects[id]=NB.blank("Notebook "+(Object.keys(S.projects).length+1));S.cur=id;persist();fillSel();render();msg("")};
   $("#nbRen").onclick=()=>{const n=prompt("Nome do notebook",P().name);if(n&&n.trim()){P().name=n.trim().slice(0,80);persist();fillSel()}};
   $("#nbDel").onclick=()=>{
     if(!confirm("Excluir o notebook “"+P().name+"”?"))return;
@@ -125,9 +126,10 @@ function notebookUI(){
   $("#nbImp").onclick=()=>$("#nbFile").click();
   $("#nbFile").onchange=e=>{
     const f=e.target.files&&e.target.files[0];if(!f)return;
+    if(f.size>2e6){msg("Arquivo grande demais (máximo 2 MB)");e.target.value="";return}
     const r=new FileReader();
     r.onload=()=>{
-      try{const p=NB.parseImport(String(r.result)),id=uid();S.projects[id]=p;S.cur=id;persist();fillSel();render();msg("Importado: "+p.name)}
+      try{if(Object.keys(S.projects).length>=50)throw new Error("limite de 50 notebooks atingido");const p=NB.parseImport(String(r.result)),id=uid();S.projects[id]=p;S.cur=id;persist();fillSel();render();msg("Importado: "+p.name)}
       catch(x){msg("Não foi possível importar: "+x.message)}
       e.target.value="";
     };

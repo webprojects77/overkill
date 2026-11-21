@@ -286,7 +286,7 @@ function algebraUI(){
         const r=IG.integrate(src,v,lo,hi);
         out.textContent="∫ "+r.f+" d"+v+" = "+r.F+" + C"+ck(r.checked)+(r.def===undefined?"":"\n\nintegral de "+fmt(lo)+" a "+fmt(hi)+" = "+fmt(r.def)+"\nconferência numérica (Simpson) = "+fmt(r.num));
       }
-    }catch(e){out.textContent=e instanceof CalcError?"Erro de "+e.kind+": "+e.message:"Erro inesperado"}
+    }catch(e){out.textContent=errText(e)}
   };
   ["#alIn","#alVar","#alA","#alB"].forEach(s=>{$(s).oninput=run});
   $("#alOp").onchange=()=>{

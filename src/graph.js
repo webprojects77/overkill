@@ -39,10 +39,10 @@ function graphUI(){
       const ly=Math.min(Math.max(ay+13,12),H-4),lx=Math.min(Math.max(ax+4,2),W-44);
       for(let x=Math.ceil(x0/step)*step;x<=x1;x+=step)if(Math.abs(x)>step/2)ctx.fillText(lab(x),tx(x)+3,ly);
       for(let y=Math.ceil(y0/step)*step;y<=y1;y+=step)if(Math.abs(y)>step/2)ctx.fillText(lab(y),lx,ty(y)-3);
-      const cart=mode()==="cart",[t0,t1]=cart?[x0,x1]:tr(),N=cart?Math.ceil(W/1.5):1500;
+      const cart=mode()==="cart",[t0,t1]=cart?[x0,x1]:tr(),N=cart?Math.ceil(W/1.5):Math.min(40000,Math.max(1500,Math.ceil(Math.abs(t1-t0)*250)));
       defs().forEach((d,k)=>{
         ctx.strokeStyle=COLORS[k];ctx.lineWidth=2;ctx.beginPath();
-        let pen=false,py=0;
+        let pen=false,py=0,px=0;
         for(let i=0;i<=N;i++){
           let p;
           try{p=point(d,t0+(t1-t0)*i/N)}catch(e){
@@ -51,9 +51,9 @@ function graphUI(){
           }
           if(!Number.isFinite(p[0])||!Number.isFinite(p[1])){pen=false;continue}
           const X=clamp(tx(p[0])),Y=clamp(ty(p[1]));
-          if(pen&&Math.abs(Y-py)>H*3&&(Y-H/2)*(py-H/2)<0)pen=false;
+          if(pen&&(cart?(Math.abs(Y-py)>H*3&&(Y-H/2)*(py-H/2)<0):(Math.abs(Y-py)>H*3||Math.abs(X-px)>W*3)))pen=false;
           if(pen)ctx.lineTo(X,Y);else ctx.moveTo(X,Y);
-          pen=true;py=Y;
+          pen=true;py=Y;px=X;
         }
         ctx.stroke();
       });
@@ -117,7 +117,14 @@ function graphUI(){
   $("#grRs").onclick=()=>{V.cx=0;V.cy=0;V.s=mode()==="cart"?40:60;trace=null;note="";draw()};
   $("#grRt").onclick=roots;
   $("#grPlot").onclick=draw;
-  $("#grPng").onclick=()=>cv.toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="overkill-grafico.png";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)});
+  $("#grPng").onclick=()=>{
+    const save=url=>{const a=document.createElement("a");a.href=url;a.download="overkill-grafico.png";a.click()};
+    if(cv.toBlob)cv.toBlob(b=>{
+      if(!b){info.textContent="Não foi possível gerar o PNG";return}
+      const u=URL.createObjectURL(b);save(u);setTimeout(()=>URL.revokeObjectURL(u),1000);
+    });
+    else try{save(cv.toDataURL("image/png"))}catch(e){info.textContent="Não foi possível gerar o PNG"}
+  };
   $("#grMode").onchange=()=>{$("#grIn").value=SAMPLES[mode()];trace=null;note="";V.cx=0;V.cy=0;V.s=mode()==="cart"?40:60;draw()};
   const later=()=>{clearTimeout(tm);tm=setTimeout(draw,200)};
   $("#grIn").oninput=later;$("#grT0").oninput=later;$("#grT1").oninput=later;

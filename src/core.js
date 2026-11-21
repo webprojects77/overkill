@@ -1,17 +1,21 @@
 const $=s=>document.querySelector(s);
-const KEY="overkill:v1";
 const st={mode:"DEG",prec:12,hist:[],ans:0,num:"R",vars:Object.create(null),fns:Object.create(null),info:""};
-function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||"{}");if(d.mode==="DEG"||d.mode==="RAD")st.mode=d.mode;if([8,12,15].includes(d.prec))st.prec=d.prec;if(Array.isArray(d.hist))st.hist=d.hist.slice(0,100);if(typeof d.ans==="number")st.ans=d.ans;loadExtra(d)}catch(e){}}
-function loadExtra(d){
-  if(["R","C","Q"].includes(d.num))st.num=d.num;
-  const ok=n=>/^[A-Za-z_]\w*$/.test(n);
-  if(d.vars&&typeof d.vars==="object")for(const k of Object.keys(d.vars))if(ok(k)&&Number.isFinite(d.vars[k]))st.vars[k]=d.vars[k];
-  if(d.fns&&typeof d.fns==="object")for(const k of Object.keys(d.fns)){const f=d.fns[k];if(ok(k)&&f&&Array.isArray(f.p)&&f.p.length&&f.p.every(x=>typeof x==="string"&&ok(x))&&typeof f.b==="string")st.fns[k]={p:f.p,b:f.b}}
-}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(st,(k,v)=>k==="info"?undefined:v))}catch(e){}}
-
 class CalcError extends Error{constructor(kind,msg,pos){super(msg);this.kind=kind;this.pos=pos}}
 const dom=(m,p)=>new CalcError("domínio",m,p);
+function errText(e){
+  if(e instanceof CalcError)return "Erro de "+e.kind+": "+e.message;
+  if(typeof console!=="undefined")console.error(e);
+  return "Erro interno ("+(e&&e.name?e.name:"desconhecido")+"): "+(e&&e.message?e.message:String(e))+". Se puder, avise o autor.";
+}
+async function copyText(v){
+  try{if(typeof navigator!=="undefined"&&navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(v);return true}}catch(e){}
+  try{
+    const t=document.createElement("textarea");
+    t.value=v;t.setAttribute("readonly","");t.style.position="fixed";t.style.opacity="0";
+    document.body.append(t);t.select();
+    const ok=document.execCommand("copy");t.remove();return ok;
+  }catch(e){return false}
+}
 
 const rad=x=>st.mode==="DEG"?x*Math.PI/180:x;
 const deg=x=>st.mode==="DEG"?x*180/Math.PI:x;
@@ -149,28 +153,55 @@ function callUser(name,args,depth){
 }
 function solveRoot(name,a,b,depth){
   const g=x=>callUser(name,[x],depth+1);
-  const tol=1e-12;let it=0;
-  const done=(m,x)=>{st.info="método: "+m+", iterações: "+it+", |f(x)|≈"+Math.abs(g(x)).toExponential(2)+", tolerância: "+tol.toExponential(0);return x};
+  const rel=1e-12;let it=0;
+  const tolOf=sx=>rel*Math.max(1,Math.abs(sx));
+  const done=(m,x,extra)=>{st.info="método: "+m+(extra||"")+", iterações: "+it+", |f(x)|≈"+Math.abs(g(x)).toExponential(2)+", tolerância relativa: "+rel.toExponential(0);return x};
   if(b!==undefined){
     let lo=a,hi=b,fl=g(lo);const fh=g(hi);
     if(fl===0)return done("bisseção",lo);
     if(fh===0)return done("bisseção",hi);
     if(fl*fh>0)throw dom("f(a) e f(b) têm o mesmo sinal: sem raiz garantida no intervalo");
-    while(it<200){it++;const mid=(lo+hi)/2,fm=g(mid);
-      if(fm===0||(hi-lo)/2<tol)return done("bisseção",mid);
-      if(fl*fm<0)hi=mid;else{lo=mid;fl=fm}}
+    while(it<300){
+      it++;const mid=(lo+hi)/2,fm=g(mid);
+      if(fm===0||(hi-lo)/2<=tolOf(mid))return done("bisseção",mid);
+      if(fl*fm<0)hi=mid;else{lo=mid;fl=fm}
+    }
     throw new CalcError("numérico","Bisseção não convergiu");
   }
-  let x=a;
-  while(it<50){it++;const fx=g(x);
-    if(Math.abs(fx)<tol)return done("Newton",x);
-    const h=1e-6*Math.max(1,Math.abs(x)),d=(g(x+h)-g(x-h))/(2*h);
+  let x=a,dsym=null;
+  const scale=Math.max(1,Math.abs(g(x)));
+  if(typeof SY!=="undefined"){
+    try{
+      const fd=st.fns[name],p=fd.p[0],dn=SY.print(SY.simp(SY.d(SY.simp(SY.parse(fd.b)),p)));
+      const ev=t=>{const s=Object.create(null);s[p]=t;return evaluate(dn,s,depth+1)};
+      const h=1e-6*Math.max(1,Math.abs(x)),num=(g(x+h)-g(x-h))/(2*h),sym=ev(x);
+      if(Number.isFinite(sym)&&Number.isFinite(num)&&Math.abs(sym-num)<=1e-4*Math.max(1,Math.abs(num)))dsym=ev;
+    }catch(e){dsym=null}
+  }
+  const how=dsym?", derivada simbólica":", derivada numérica";
+  const deriv=t=>{if(dsym)return dsym(t);const h=1e-6*Math.max(1,Math.abs(t));return (g(t+h)-g(t-h))/(2*h)};
+  const mag=t=>{try{return Math.abs(g(t))}catch(e){return Infinity}};
+  while(it<60){
+    it++;const fx=g(x);
+    if(Math.abs(fx)<=rel*scale)return done("Newton",x,how);
+    const d=deriv(x);
     if(d===0||!Number.isFinite(d))throw new CalcError("numérico","Derivada nula ou indefinida; tente outro chute");
-    const nx=x-fx/d;
+    const full=x-fx/d,m0=Math.abs(fx);
+    let nx=full,ok=mag(full)<m0;
+    if(!ok){
+      let step=fx/d;
+      for(let k=1;k<=10;k++){step/=2;const c=x-step;if(mag(c)<m0){nx=c;ok=true;break}}
+    }
+    if(!ok){
+      if(Number.isFinite(mag(full)))nx=full;
+      else if(m0<=1e-9*scale)return done("Newton",x,how);
+      else throw new CalcError("numérico","Newton não conseguiu avançar a partir deste chute; tente outro chute ou um intervalo");
+    }
     if(!Number.isFinite(nx))throw new CalcError("numérico","Newton divergiu; tente outro chute ou um intervalo");
-    if(Math.abs(nx-x)<tol*Math.max(1,Math.abs(x)))return done("Newton",nx);
-    x=nx}
-  throw new CalcError("numérico","Newton não convergiu em 50 iterações; tente outro chute ou um intervalo");
+    if(Math.abs(nx-x)<=tolOf(x))return done("Newton",nx,how);
+    x=nx;
+  }
+  throw new CalcError("numérico","Newton não convergiu em 60 iterações; tente outro chute ou um intervalo");
 }
 const reserved=n=>Object.hasOwn(FN,n)||Object.hasOwn(CONST,n)||n==="ans"||n==="solve";
 function execute(src){
@@ -199,16 +230,6 @@ function execute(src){
   }
   return evalAny(src);
 }
-function renderVars(){
-  const ul=$("#vars");ul.textContent="";
-  const add=(label,del)=>{
-    const li=document.createElement("li"),s=document.createElement("span"),b=document.createElement("button");
-    s.textContent=label;b.type="button";b.textContent="×";b.setAttribute("aria-label","Remover "+label);
-    b.onclick=()=>{del();save();renderVars()};li.append(s,b);ul.append(li);
-  };
-  for(const k of Object.keys(st.vars))add(k+" = "+fmt(st.vars[k]),()=>{delete st.vars[k]});
-  for(const k of Object.keys(st.fns))add(k+"("+st.fns[k].p.join(", ")+") = "+st.fns[k].b,()=>{delete st.fns[k]});
-}
 function fmt(x){
   if(Object.is(x,-0))x=0;
   if(Number.isInteger(x)&&Math.abs(x)<1e15)return String(x);
@@ -218,92 +239,3 @@ function fmt(x){
   return String(n);
 }
 
-const ex=$("#expr"),prev=$("#prev"),res=$("#res"),err=$("#err");
-let lastText="";
-
-function showErr(e){
-  if(e instanceof CalcError)err.textContent="Erro de "+e.kind+" (posição "+((e.pos||0)+1)+"): "+e.message;
-  else err.textContent="Erro inesperado";
-}
-function live(){
-  err.textContent="";
-  const s=ex.value;
-  if(!s.trim()){res.textContent=lastText;return}
-  try{st.info="";const o=evalAny(s);res.textContent="= "+o.r;res.dataset.v=o.r;$("#info").textContent=st.info}catch(e){res.textContent="";$("#info").textContent=""}
-}
-function commit(){
-  let s=ex.value;
-  if(!s.trim())return;
-  if(/^\s*[*\/^×÷]/.test(s))s="ans"+s;
-  try{
-    const o=execute(s);
-    if(o.v!==undefined)st.ans=o.v;
-    const r=o.r;
-    st.hist.unshift({e:s,r});st.hist=st.hist.slice(0,100);
-    prev.textContent=s;lastText=r;res.textContent=r;res.dataset.v=r;ex.value="";err.textContent="";$("#info").textContent=st.info;
-    save();renderHist();renderVars();
-  }catch(e){showErr(e)}
-}
-function insert(txt){
-  const a=ex.selectionStart??ex.value.length,b=ex.selectionEnd??a;
-  ex.value=ex.value.slice(0,a)+txt+ex.value.slice(b);
-  const c=a+txt.length;ex.focus({preventScroll:true});ex.setSelectionRange(c,c);live();
-}
-function back(){
-  const a=ex.selectionStart??ex.value.length,b=ex.selectionEnd??a;
-  if(a!==b){ex.value=ex.value.slice(0,a)+ex.value.slice(b);ex.setSelectionRange(a,a)}
-  else if(a>0){ex.value=ex.value.slice(0,a-1)+ex.value.slice(a);ex.setSelectionRange(a-1,a-1)}
-  live();
-}
-function renderHist(){
-  const ul=$("#hist");ul.textContent="";
-  st.hist.forEach(h=>{
-    const li=document.createElement("li"),b=document.createElement("button"),r=document.createElement("b");
-    b.type="button";r.textContent=" = "+h.r;b.append(document.createTextNode(h.e),r);
-    b.onclick=()=>{ex.value=h.e;ex.focus({preventScroll:true});live()};
-    li.append(b);ul.append(li);
-  });
-}
-
-const KEYS=[
-["C","clr","op"],["⌫","bs","op"],["(","(","op"],[")",")","op"],
-["sin","sin(","op"],["cos","cos(","op"],["tan","tan(","op"],["^","^","op"],
-["ln","ln(","op"],["log","log(","op"],["√","sqrt(","op"],["!","!","op"],
-["7","7"],["8","8"],["9","9"],["÷","/","op"],
-["4","4"],["5","5"],["6","6"],["×","*","op"],
-["1","1"],["2","2"],["3","3"],["−","-","op"],
-["0","0"],[".","."],["π","pi","op"],["+","+","op"],
-["ans","ans","op"],["%","%","op"],["e","e","op"],[",",",","op"],
-["i","i","op"],["gcd","gcd(","op"],["abs","abs(","op"],["conj","conj(","op"],
-["=","eq","eq"]
-];
-const pad=$("#pad");
-KEYS.forEach(([l,v,c])=>{
-  const b=document.createElement("button");b.type="button";b.textContent=l;if(c)b.className=c;
-  b.setAttribute("aria-label",({bs:"Apagar",clr:"Limpar",eq:"Calcular"})[v]||l);
-  b.onclick=()=>{
-    if(v==="clr"){ex.value="";prev.textContent="";lastText="";res.textContent="";err.textContent="";ex.focus({preventScroll:true})}
-    else if(v==="bs")back();
-    else if(v==="eq")commit();
-    else insert(v);
-  };
-  pad.append(b);
-});
-
-ex.addEventListener("input",live);
-ex.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();commit()}else if(e.key==="Escape"){ex.value="";live()}});
-async function copy(){
-  const v=res.dataset.v;if(!v)return;
-  try{await navigator.clipboard.writeText(v);const o=res.textContent;res.textContent="copiado";setTimeout(()=>{res.textContent=o},700)}catch(e){}
-}
-res.onclick=copy;
-res.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();copy()}};
-$("#mode").onclick=()=>{st.mode=st.mode==="DEG"?"RAD":"DEG";$("#mode").textContent=st.mode;save();live()};
-$("#numMode").onclick=()=>{st.num={R:"C",C:"Q",Q:"R"}[st.num];$("#numMode").textContent={R:"ℝ",C:"ℂ",Q:"ℚ"}[st.num];save();live()};
-$("#prec").onchange=e=>{st.prec=parseInt(e.target.value,10);save();live()};
-$("#clr").onclick=()=>{if(st.hist.length&&confirm("Apagar todo o histórico?")){st.hist=[];save();renderHist()}};
-
-load();
-$("#numMode").textContent={R:"ℝ",C:"ℂ",Q:"ℚ"}[st.num];
-$("#mode").textContent=st.mode;$("#prec").value=String(st.prec);renderHist();renderVars();
-if(matchMedia("(pointer:fine)").matches)ex.focus();else ex.setAttribute("inputmode","none");

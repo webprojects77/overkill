@@ -40,7 +40,7 @@
 
 ## Solving equations
 
-- `solve(f, guess)` uses Newton's method from the guess: define `f(x)=x^2-2`, then `solve(f,1)`.
+- `solve(f, guess)` uses Newton's method from the guess: define `f(x)=x^2-2`, then `solve(f,1)`. It uses the exact derivative when it can and shortens the step if the guess is poor.
 - `solve(f, a, b)` uses bisection on the interval and requires `f(a)` and `f(b)` to have opposite signs.
 - The result comes with method, iterations, residual and tolerance on the line below. If it does not converge it says so instead of inventing an answer.
 - The formula must have exactly one parameter.
@@ -159,7 +159,7 @@
 
 ## Resolver equações
 
-- `solve(f, chute)` usa o método de Newton a partir do chute: defina `f(x)=x^2-2` e depois `solve(f,1)`.
+- `solve(f, chute)` usa o método de Newton a partir do chute: defina `f(x)=x^2-2` e depois `solve(f,1)`. Usa a derivada exata quando consegue e encurta o passo se o chute for ruim.
 - `solve(f, a, b)` usa bisseção no intervalo e exige que `f(a)` e `f(b)` tenham sinais opostos.
 - O resultado vem com método, iterações, resíduo e tolerância na linha de baixo. Se não convergir, ele avisa em vez de inventar uma resposta.
 - A fórmula precisa ter um único parâmetro.
